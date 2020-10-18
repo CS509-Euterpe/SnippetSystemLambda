@@ -1,4 +1,4 @@
-package edu.wpi.cs.eutrepe.demo;
+package edu.wpi.cs.eutrepe.lambda;
 
 import com.amazonaws.services.lambda.runtime.ClientContext;
 import com.amazonaws.services.lambda.runtime.CognitoIdentity;

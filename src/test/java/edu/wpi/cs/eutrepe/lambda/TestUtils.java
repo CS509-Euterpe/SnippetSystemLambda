@@ -1,4 +1,4 @@
-package edu.wpi.cs.eutrepe.demo;
+package edu.wpi.cs.eutrepe.lambda;
 
 import java.io.IOException;
 import java.io.InputStream;
