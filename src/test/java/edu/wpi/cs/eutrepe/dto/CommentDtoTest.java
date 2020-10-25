@@ -19,7 +19,6 @@ public class CommentDtoTest {
 		CommentDto comment = new CommentDto();
 		assertNull(comment.id);
 		assertNull(comment.end);
-		assertNull(comment.parameters);
 		assertNull(comment.snippetID);
 		assertNull(comment.text);
 		assertNull(comment.timestamp);

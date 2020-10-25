@@ -21,7 +21,6 @@ public class SnippetDtoTest {
 		assertNull(snippet.id);
 		assertNull(snippet.info);
 		assertNull(snippet.language);
-		assertNull(snippet.parameters);
 		assertNull(snippet.timestamp);
 		
 		snippet.setComments(new ArrayList<CommentDto>());
