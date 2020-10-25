@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 public class SnippetDto {
-	ParameterDto parameters;
 	String id;
 	List<CommentDto> comments;
 	String info;
@@ -12,12 +11,6 @@ public class SnippetDto {
 	String content;
 	Date timestamp;
 	
-	public ParameterDto getParameters() {
-		return parameters;
-	}
-	public void setParameters(ParameterDto parameters) {
-		this.parameters = parameters;
-	}
 	public String getId() {
 		return id;
 	}
@@ -57,10 +50,9 @@ public class SnippetDto {
 	
 	@Override
 	public String toString() {
-		return "SnippetDto [parameters=" + parameters + ", id=" + id + ", comments=" + comments + ", info=" + info
-				+ ", language=" + language + ", content=" + content + ", timestamp=" + timestamp + "]";
+		return "SnippetDto [id=" + id + ", comments=" + comments + ", info=" + info + ", language=" + language
+				+ ", content=" + content + ", timestamp=" + timestamp + "]";
 	}
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -70,7 +62,6 @@ public class SnippetDto {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((info == null) ? 0 : info.hashCode());
 		result = prime * result + ((language == null) ? 0 : language.hashCode());
-		result = prime * result + ((parameters == null) ? 0 : parameters.hashCode());
 		result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
 		return result;
 	}
@@ -106,11 +97,6 @@ public class SnippetDto {
 			return false;
 		if (language != other.language)
 			return false;
-		if (parameters == null) {
-			if (other.parameters != null)
-				return false;
-		} else if (!parameters.equals(other.parameters))
-			return false;
 		if (timestamp == null) {
 			if (other.timestamp != null)
 				return false;
@@ -118,4 +104,5 @@ public class SnippetDto {
 			return false;
 		return true;
 	}
+	
 }
