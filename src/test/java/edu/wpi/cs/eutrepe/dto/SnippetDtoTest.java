@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class SnippetDtoTest {
 	final String content = "dumbContent";
-	final String id = "dumbID";
+	final Integer id = 1;
 	final String info = "dumbInfo";
 	final String name = "dumbName";
 	final String password = "dumbPassword";

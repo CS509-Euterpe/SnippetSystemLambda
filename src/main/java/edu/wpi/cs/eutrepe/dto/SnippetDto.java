@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 public class SnippetDto {
-	String id;
+	Integer id;
 	String password;
 	String name;
 	String info;
@@ -13,10 +13,10 @@ public class SnippetDto {
 	String content;
 	Date timestamp;
 	
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public List<CommentDto> getComments() {

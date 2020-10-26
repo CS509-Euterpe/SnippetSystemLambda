@@ -2,6 +2,7 @@ package edu.wpi.cs.eutrepe.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Date;
 
 import edu.wpi.cs.eutrepe.dto.Language;
@@ -38,26 +39,44 @@ public class SnippetDao {
     	}
     }
     
-    public boolean addSnippet(SnippetDto snippet) throws Exception {
+    public Integer addSnippet(SnippetDto snippet) throws Exception {
     	try {
-    		PreparedStatement ps = conn.prepareStatement("INSERT INTO " + tblName + " (id,info,language,timestamp,content,password,name) values(?,?,?,?,?,?,?);");
-            ps.setString(1,  snippet.getId());
-            ps.setString(2,  snippet.getInfo());
-            ps.setInt(3,  1);
-            ps.setDate(4,  snippet.getTimestamp());
-            ps.setString(5,  snippet.getContent());
-            ps.setString(6,  snippet.getPassword());
-            ps.setString(7,  snippet.getName());
+    		Integer id = null;
+    		PreparedStatement ps = conn.prepareStatement("INSERT INTO " + tblName + " (info,language,timestamp,content,password,name) values(?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1,  snippet.getInfo());
+            ps.setInt(2,  1);
+            ps.setDate(3,  snippet.getTimestamp());
+            ps.setString(4,  snippet.getContent());
+            ps.setString(5,  snippet.getPassword());
+            ps.setString(6,  snippet.getName());
             ps.execute();
-    		return true;
+            ResultSet resultSet = ps.getGeneratedKeys();
+            while(resultSet.next()) {
+            	id = resultSet.getInt(1);
+            }
+    		return id;
     	} catch(Exception e) {
         	e.printStackTrace();
             throw new Exception("Failed in adding snippet: " + e.getMessage());
     	}
     }
+    
+    public boolean deleteSnippet(Integer id) throws Exception {
+    	try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM " + tblName + " WHERE id = ?;");
+            ps.setInt(1, id);
+            int numAffected = ps.executeUpdate();
+            ps.close();
+            
+            return (numAffected == 1);
+    	} catch (Exception e) {
+        	e.printStackTrace();
+            throw new Exception("Failed in getting snippet: " + e.getMessage());
+    	}
+    }
 
 	private SnippetDto generateSnippet(ResultSet resultSet) throws Exception {
-        String id  = resultSet.getString("id");
+		Integer id  = resultSet.getInt("id");
         String content = resultSet.getString("content");
         String info = resultSet.getString("info");
 //        Language language = resultSet.getInt("language");
