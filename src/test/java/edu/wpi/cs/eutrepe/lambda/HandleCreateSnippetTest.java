@@ -1,34 +1,24 @@
 package edu.wpi.cs.eutrepe.lambda;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import static org.junit.Assert.*;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import edu.wpi.cs.eutrepe.dto.SnippetDto;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
 public class HandleCreateSnippetTest {
 
-    private static final String SAMPLE_INPUT_STRING = "{\"foo\": \"bar\"}";
-    private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
-
     @Test
-    public void testHandleCreateSnippet() throws IOException {
+    public void testHandleCreateSnippet() {
         HandleCreateSnippet handler = new HandleCreateSnippet();
-
-        InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING.getBytes());;
-        OutputStream output = new ByteArrayOutputStream();
-
-        handler.handleRequest(input, output, null);
-
-        // TODO: validate output here if needed.
-        String sampleOutputString = output.toString();
-        System.out.println(sampleOutputString);
-        Assert.assertEquals(EXPECTED_OUTPUT_STRING, sampleOutputString);
+        SnippetDto snippet = new SnippetDto();
+        assertNull(snippet.getId());
+        SnippetDto savedSnippet = handler.handleRequest(snippet, null);
+        assertNotNull(savedSnippet.getId());
+        snippet.setId(savedSnippet.getId());
+        assertEquals(savedSnippet, snippet);
     }
 }
