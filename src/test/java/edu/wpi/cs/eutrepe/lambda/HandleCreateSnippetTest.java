@@ -37,4 +37,13 @@ public class HandleCreateSnippetTest extends LambdaTest{
 			e.printStackTrace();
 		}
     }
+    
+    @Test
+    public void testBadHandleCreateSnippet() {
+        HandleCreateSnippet handler = new HandleCreateSnippet();
+        SnippetDto snippet = new SnippetDto();
+        assertNull(snippet.getId());
+        CreateSnippetResponse snippetResponse = handler.handleRequest(snippet, createContext("create"));
+        assertTrue(snippetResponse.getHttpCode().equals(500));
+    }
 }
