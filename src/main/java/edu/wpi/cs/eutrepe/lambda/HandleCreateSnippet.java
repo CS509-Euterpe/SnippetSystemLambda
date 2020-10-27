@@ -59,7 +59,7 @@ public class HandleCreateSnippet implements RequestStreamHandler {
 	@Override
 	public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
 		// TODO Auto-generated method stub
-		LambdaLogger logger = context.getLogger();
+		logger = context.getLogger();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(input, Charset.forName("US-ASCII")));
 		PrintWriter writer = new PrintWriter(
 				new BufferedWriter(new OutputStreamWriter(output, Charset.forName("US-ASCII"))));
@@ -67,6 +67,7 @@ public class HandleCreateSnippet implements RequestStreamHandler {
 			SnippetDto snippet = new Gson().fromJson(reader, SnippetDto.class);
 			logger.log("STREAM TYPE: " + input.getClass().toString());
 			logger.log("SNIPPET TYPE: " + snippet.getClass().toString());
+			logger.log(snippet.toString());
 			CreateSnippetResponse res = new CreateSnippetResponse();
 
 			SnippetDao snippetDao = new SnippetDao();
