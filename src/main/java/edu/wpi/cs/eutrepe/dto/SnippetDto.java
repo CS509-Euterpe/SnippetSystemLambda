@@ -1,6 +1,6 @@
 package edu.wpi.cs.eutrepe.dto;
 
-import java.sql.Date;
+import java.time.*;
 import java.util.List;
 
 public class SnippetDto {
@@ -11,7 +11,11 @@ public class SnippetDto {
 	List<CommentDto> comments;
 	Language language;
 	String content;
-	Date timestamp;
+	LocalDate timestamp;
+	
+	public SnippetDto() {
+		
+	}
 	
 	public Integer getId() {
 		return id;
@@ -43,10 +47,10 @@ public class SnippetDto {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public Date getTimestamp() {
+	public LocalDate getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(Date timestamp) {
+	public void setTimestamp(LocalDate timestamp) {
 		this.timestamp = timestamp;
 	}
 	public String getPassword() {

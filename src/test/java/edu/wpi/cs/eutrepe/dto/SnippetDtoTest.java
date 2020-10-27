@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.sql.Date;
+import java.time.LocalDate;
 
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ public class SnippetDtoTest {
 	final String info = "dumbInfo";
 	final String name = "dumbName";
 	final String password = "dumbPassword";
-	final Date timestamp = new Date(0);
+	final LocalDate timestamp = LocalDate.now();
 	
 	@Test
 	public void testCreateSnippetDto() {
