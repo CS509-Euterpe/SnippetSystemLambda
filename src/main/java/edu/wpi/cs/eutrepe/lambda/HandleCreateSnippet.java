@@ -27,7 +27,6 @@ public class HandleCreateSnippet implements RequestStreamHandler {
 
 	@Override
 	public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
-		// TODO Auto-generated method stub
 		logger = context.getLogger();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(input, Charset.forName("US-ASCII")));
 		PrintWriter writer = new PrintWriter(

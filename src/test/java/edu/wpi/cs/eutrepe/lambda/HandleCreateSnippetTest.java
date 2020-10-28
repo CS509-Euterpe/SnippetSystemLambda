@@ -20,10 +20,10 @@ import edu.wpi.cs.eutrepe.http.CreateSnippetResponse;
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class HandleCreateSnippetTest extends LambdaTest{
+public class HandleCreateSnippetTest extends LambdaTest {
 
     @Test
-    public void testHandleCreateSnippet() throws IOException {
+    public void testHandleCreateSnippet() throws Exception {
         HandleCreateSnippet handler = new HandleCreateSnippet();
         SnippetDto snippet = new SnippetDto();
         snippet.setContent("testContent");
@@ -43,11 +43,7 @@ public class HandleCreateSnippetTest extends LambdaTest{
         assertEquals(savedSnippet, snippet);
         
         SnippetDao snippetDao = new SnippetDao();
-        try {
-			snippetDao.deleteSnippet(savedSnippet.getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		snippetDao.deleteSnippet(savedSnippet.getId());
     }
     
     @Test

@@ -21,11 +21,11 @@ public class SnippetDao {
     	}
     }
     
-    public SnippetDto getSnippet(String id) throws Exception {
+    public SnippetDto getSnippet(Integer id) throws Exception {
     	try {
     		SnippetDto snippet = null;
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + " WHERE id=?;");
-            ps.setString(1,  id);
+            ps.setInt(1,  id);
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
                 snippet = generateSnippet(resultSet);
