@@ -1,34 +1,81 @@
 package edu.wpi.cs.eutrepe.lambda;
 
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDate;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.google.gson.Gson;
+
+import edu.wpi.cs.eutrepe.db.SnippetDao;
+import edu.wpi.cs.eutrepe.dto.SnippetDto;
+import edu.wpi.cs.eutrepe.http.CreateSnippetResponse;
+import edu.wpi.cs.eutrepe.http.DeleteSnippetResponse;
+
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class HandleDeleteSnippetTest {
+public class HandleDeleteSnippetTest extends LambdaTest{
 
-    private static final String SAMPLE_INPUT_STRING = "{\"foo\": \"bar\"}";
-    private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
+	//private static final String SAMPLE_DELETE_INPUT_STRING = "{\"foo\": \"bar\"}";
+	
 
-    @Test
-    public void testHandleDeleteSnippet() throws IOException {
-        HandleDeleteSnippet handler = new HandleDeleteSnippet();
-
-        InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING.getBytes());;
+	@Test
+	public void testHandleDeleteSnippet() throws Exception {
+		// create snippet to delete
+		HandleCreateSnippet createhandler = new HandleCreateSnippet();
+        SnippetDto snippet = new SnippetDto();
+        snippet.setContent("testContent");
+        snippet.setInfo("testInfo");
+        snippet.setName("testName");
+        snippet.setTimestamp(LocalDate.now());
+        assertNull(snippet.getId());
+        
+       
+        
+        String input = new Gson().toJson(snippet);
+        InputStream inputStream = new ByteArrayInputStream(input.getBytes());
         OutputStream output = new ByteArrayOutputStream();
+        createhandler.handleRequest(inputStream, output, createContext("create"));
+        
+        SnippetDao snippetDao = new SnippetDao();
+        Integer id = snippetDao.addSnippet(snippet); 
+        final String SAMPLE_DELETE_INPUT_STRING = String.format("{ \"pathParameters\": { \"id\": \"%d\"  } }", id);
+        
+		// apply delete snippet
+		HandleDeleteSnippet deletehandler = new HandleDeleteSnippet();
+		InputStream deleteinput = new ByteArrayInputStream(SAMPLE_DELETE_INPUT_STRING.getBytes());
+		OutputStream deleteoutput = new ByteArrayOutputStream();
+		deletehandler.handleRequest(deleteinput, deleteoutput, createContext("delete"));
+		DeleteSnippetResponse snippetResponse = new Gson().fromJson(deleteoutput.toString(), DeleteSnippetResponse.class);
+        SnippetDto savedSnippet = snippetResponse.getSnippet();
+        
+        
+		assertNull(savedSnippet.getId()); //TODO this probably wont return null, figure out how to check database table, for correct deletion
+		assertTrue(snippetResponse.getHttpCode().equals(201));
 
-        handler.handleRequest(input, output, null);
+	}
 
-        // TODO: validate output here if needed.
-        String sampleOutputString = output.toString();
-        System.out.println(sampleOutputString);
-        Assert.assertEquals(EXPECTED_OUTPUT_STRING, sampleOutputString);
-    }
+	@Test
+	public void testBadPermissionHandleDeleteSnippet() throws IOException {
+		
+		
+		//assertTrue(snippetResponse.getHttpCode().equals(403));
+		
+	}
+	
+	@Test
+	public void testBadIdHandleDeleteSnippet() throws IOException {
+		
+		//assertTrue(snippetResponse.getHttpCode().equals(404));
+		
+	}
 }

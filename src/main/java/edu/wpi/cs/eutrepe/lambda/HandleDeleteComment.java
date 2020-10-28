@@ -7,7 +7,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 
 public class HandleDeleteComment implements RequestStreamHandler {
-
+	final String successMessage = "Successfully deleted comment";
+	final String failureMessage = "Failed to delete comment";
+	
     @Override
     public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
 

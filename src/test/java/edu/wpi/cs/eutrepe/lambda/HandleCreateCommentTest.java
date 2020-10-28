@@ -12,7 +12,7 @@ import org.junit.Test;
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class HandleCreateCommentTest {
+public class HandleCreateCommentTest extends LambdaTest{
 
     private static final String SAMPLE_INPUT_STRING = "{\"foo\": \"bar\"}";
     private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
@@ -30,5 +30,11 @@ public class HandleCreateCommentTest {
         String sampleOutputString = output.toString();
         System.out.println(sampleOutputString);
         Assert.assertEquals(EXPECTED_OUTPUT_STRING, sampleOutputString);
+    }
+    
+    @Test
+    public void testBadHandleCreateSnippet() throws IOException {
+    	
+    	
     }
 }
