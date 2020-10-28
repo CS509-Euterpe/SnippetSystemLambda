@@ -33,10 +33,8 @@ public class HandleGetSnippet implements RequestStreamHandler {
 		JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
 		SnippetDao snippetDao = new SnippetDao();
 		logger.log(event.toString());
-		if (event.get("pathParameters") != null) {
-			logger.log(event.get("pathParameters").toString());
-            JsonObject pps = (JsonObject) event.get("pathParameters");
-            Integer id = new Gson().fromJson(pps.get("id"), Integer.class);
+		if (event.get("id") != null) {
+            Integer id = new Gson().fromJson(event.get("id"), Integer.class);
             try {
 				SnippetDto snippet = snippetDao.getSnippet(id);
 				writer.write(new Gson().toJson(snippet));
