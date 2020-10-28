@@ -17,8 +17,11 @@ public class DatabaseUtil {
 	// Make sure matches Schema created from MySQL WorkBench
 	// Make sysEnv variable lambdaTesting so we know we are locally testing
 	public final static String lambdaTesting = "lambdaTesting";
-	public final static String dbName = "sys";
+	public final static String dbName = "Snippet";
 	public final static String testName = "test";
+	final static String dbUsername = "admin";
+	final static String dbPassword = "admin123";
+	final static String rdsMySqlDatabaseUrl = "eutrepe.cnejvyieslew.us-east-1.rds.amazonaws.com";
 	
 	// pooled across all usages.
 	static Connection conn;
@@ -36,22 +39,7 @@ public class DatabaseUtil {
 			schemaName = testName;
 		}
 		
-		// These three environment variables must be set!
-		String dbUsername = System.getenv("dbUsername");
-		if (dbUsername == null) {
-			System.err.println("Environment variable dbUsername is not set!");
-		}
-		String dbPassword = System.getenv("dbPassword");
-		if (dbPassword == null) {
-			System.err.println("Environment variable dbPassword is not set!");
-		}
-		String rdsMySqlDatabaseUrl = System.getenv("rdsMySqlDatabaseUrl");
-		if (rdsMySqlDatabaseUrl == null) {
-			System.err.println("Environment variable rdsMySqlDatabaseUrl is not set!");
-		}
-		
 		try {
-			//System.out.println("start connecting......");
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
 			conn = DriverManager.getConnection(
@@ -60,6 +48,7 @@ public class DatabaseUtil {
 					dbPassword);
 			return conn;
 		} catch (Exception ex) {
+			System.err.println(ex.getMessage());
 			System.err.println("DB-ERROR:" + schemaName + "," + dbUsername + "," + dbPassword + "," + rdsMySqlDatabaseUrl);
 			throw new Exception("Failed in database connection");
 		}

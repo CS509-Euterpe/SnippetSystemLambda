@@ -1,20 +1,26 @@
 package edu.wpi.cs.eutrepe.dto;
 
-import java.util.Date;
+import java.time.*;
 import java.util.List;
 
 public class SnippetDto {
-	String id;
-	List<CommentDto> comments;
+	Integer id;
+	String password;
+	String name;
 	String info;
+	List<CommentDto> comments;
 	Language language;
 	String content;
-	Date timestamp;
+	LocalDate timestamp;
 	
-	public String getId() {
+	public SnippetDto() {
+		
+	}
+	
+	public Integer getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public List<CommentDto> getComments() {
@@ -41,18 +47,25 @@ public class SnippetDto {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public Date getTimestamp() {
+	public LocalDate getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(Date timestamp) {
+	public void setTimestamp(LocalDate timestamp) {
 		this.timestamp = timestamp;
 	}
-	
-	@Override
-	public String toString() {
-		return "SnippetDto [id=" + id + ", comments=" + comments + ", info=" + info + ", language=" + language
-				+ ", content=" + content + ", timestamp=" + timestamp + "]";
+	public String getPassword() {
+		return password;
 	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -62,6 +75,8 @@ public class SnippetDto {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((info == null) ? 0 : info.hashCode());
 		result = prime * result + ((language == null) ? 0 : language.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
 		return result;
 	}
@@ -97,6 +112,16 @@ public class SnippetDto {
 			return false;
 		if (language != other.language)
 			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
 		if (timestamp == null) {
 			if (other.timestamp != null)
 				return false;
@@ -105,4 +130,9 @@ public class SnippetDto {
 		return true;
 	}
 	
+	@Override
+	public String toString() {
+		return "SnippetDto [id=" + id + ", password=" + password + ", name=" + name + ", info=" + info + ", comments="
+				+ comments + ", language=" + language + ", content=" + content + ", timestamp=" + timestamp + "]";
+	}
 }

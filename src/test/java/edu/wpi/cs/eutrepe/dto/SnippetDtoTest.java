@@ -3,15 +3,18 @@ package edu.wpi.cs.eutrepe.dto;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 
 import org.junit.Test;
 
 public class SnippetDtoTest {
 	final String content = "dumbContent";
-	final String id = "dumbID";
+	final Integer id = 1;
 	final String info = "dumbInfo";
-	final Date timestamp = new Date();
+	final String name = "dumbName";
+	final String password = "dumbPassword";
+	final LocalDate timestamp = LocalDate.now();
 	
 	@Test
 	public void testCreateSnippetDto() {
@@ -22,6 +25,8 @@ public class SnippetDtoTest {
 		assertNull(snippet.info);
 		assertNull(snippet.language);
 		assertNull(snippet.timestamp);
+		assertNull(snippet.name);
+		assertNull(snippet.password);
 		
 		snippet.setComments(new ArrayList<CommentDto>());
 		snippet.setContent(content);
@@ -36,5 +41,7 @@ public class SnippetDtoTest {
 		assertEquals(snippet.info, info);
 		assertEquals(snippet.language, Language.JAVA);
 		assertEquals(snippet.timestamp, timestamp);
+		assertEquals(snippet.password, password);
+		assertEquals(snippet.name, name);
 	}
 }
