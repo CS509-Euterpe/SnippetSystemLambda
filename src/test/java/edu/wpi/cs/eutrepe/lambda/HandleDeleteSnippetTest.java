@@ -50,19 +50,16 @@ public class HandleDeleteSnippetTest extends LambdaTest{
         
         SnippetDao snippetDao = new SnippetDao();
         Integer id = snippetDao.addSnippet(snippet); 
-        final String SAMPLE_DELETE_INPUT_STRING = String.format("{ \"pathParameters\": { \"id\": \"%d\"  } }", id);
+        final String SAMPLE_DELETE_INPUT_STRING = String.format("{ \"id\": \"%d\"  }", id);
         
 		// apply delete snippet
 		HandleDeleteSnippet deletehandler = new HandleDeleteSnippet();
 		InputStream deleteinput = new ByteArrayInputStream(SAMPLE_DELETE_INPUT_STRING.getBytes());
 		OutputStream deleteoutput = new ByteArrayOutputStream();
 		deletehandler.handleRequest(deleteinput, deleteoutput, createContext("delete"));
-		DeleteSnippetResponse snippetResponse = new Gson().fromJson(deleteoutput.toString(), DeleteSnippetResponse.class);
-        SnippetDto savedSnippet = snippetResponse.getSnippet();
         
         
-		assertNull(savedSnippet.getId()); //TODO this probably wont return null, figure out how to check database table, for correct deletion
-		assertTrue(snippetResponse.getHttpCode().equals(201));
+		assertNull(new SnippetDao().getSnippet(id)); 
 
 	}
 

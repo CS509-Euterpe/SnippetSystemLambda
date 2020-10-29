@@ -31,7 +31,7 @@ public class HandleGetSnippetTest extends LambdaTest {
         snippet.setTimestamp(LocalDate.now());
 		Integer id = snippetDao.addSnippet(snippet);
 		
-        final String SAMPLE_INPUT_STRING = String.format("{ \"pathParameters\": { \"id\": \"%d\"  } }", id);
+        final String SAMPLE_INPUT_STRING = String.format("{ \"id\": \"%d\" }", id);
         InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING.getBytes());;
         OutputStream output = new ByteArrayOutputStream();
 
