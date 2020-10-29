@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import edu.wpi.cs.eutrepe.db.SnippetDao;
+import edu.wpi.cs.eutrepe.dto.Language;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
 
 /**
@@ -26,6 +27,7 @@ public class HandleGetSnippetTest extends LambdaTest {
         snippet.setContent("testContent");
         snippet.setInfo("testInfo");
         snippet.setName("testName");
+        snippet.setLanguage(Language.PYTHON);
         snippet.setTimestamp(LocalDate.now());
 		Integer id = snippetDao.addSnippet(snippet);
 		

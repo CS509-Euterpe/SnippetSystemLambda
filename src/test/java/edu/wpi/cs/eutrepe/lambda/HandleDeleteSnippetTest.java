@@ -16,6 +16,7 @@ import org.junit.Test;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.eutrepe.db.SnippetDao;
+import edu.wpi.cs.eutrepe.dto.Language;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
 import edu.wpi.cs.eutrepe.http.CreateSnippetResponse;
 import edu.wpi.cs.eutrepe.http.DeleteSnippetResponse;
@@ -36,6 +37,7 @@ public class HandleDeleteSnippetTest extends LambdaTest{
         snippet.setContent("testContent");
         snippet.setInfo("testInfo");
         snippet.setName("testName");
+        snippet.setLanguage(Language.JAVA);
         snippet.setTimestamp(LocalDate.now());
         assertNull(snippet.getId());
         

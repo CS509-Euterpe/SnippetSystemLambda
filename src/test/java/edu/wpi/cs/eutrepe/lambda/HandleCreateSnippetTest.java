@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.eutrepe.db.SnippetDao;
+import edu.wpi.cs.eutrepe.dto.Language;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
 import edu.wpi.cs.eutrepe.http.CreateSnippetResponse;
 
@@ -29,6 +30,7 @@ public class HandleCreateSnippetTest extends LambdaTest {
         snippet.setContent("testContent");
         snippet.setInfo("testInfo");
         snippet.setName("testName");
+        snippet.setLanguage(Language.PYTHON);
         snippet.setTimestamp(LocalDate.now());
         assertNull(snippet.getId());
         

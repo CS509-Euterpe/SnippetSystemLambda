@@ -18,7 +18,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import edu.wpi.cs.eutrepe.db.SnippetDao;
-import edu.wpi.cs.eutrepe.dto.SnippetDto;
 
 public class HandleDeleteSnippet implements RequestStreamHandler {
 	final String successMessage = "Successfully deleted snippet";
