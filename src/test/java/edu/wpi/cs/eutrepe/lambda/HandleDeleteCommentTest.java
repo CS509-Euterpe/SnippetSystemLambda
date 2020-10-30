@@ -33,18 +33,20 @@ public class HandleDeleteCommentTest extends LambdaTest{
     @Test
     public void testHandleDeleteComment() throws Exception {
      
-    	HandleDeleteComment handler = new HandleDeleteComment();
-    	CommentDto comment = new CommentDto();
-    	  //comment.setSnippetID(snippetID);
-        //comment.setId(id);
-        comment.setText("testcommentText");
-        comment.setTimestamp(LocalDate.now());
-        comment.setStart(1);
-        comment.setEnd(2);
-
-        CommentDao commentDao = new CommentDao();
-        Integer TestID = commentDao.addComment(comment);
-        commentDao.deleteComment(TestID);
-        assertEquals(new CommentDao().getComments(TestID),new ArrayList<CommentDto>()); 
+    	//tested in Create comment test
+    	
+//    	HandleDeleteComment handler = new HandleDeleteComment();
+//    	CommentDto comment = new CommentDto();
+//    	  //comment.setSnippetID(snippetID);
+//        //comment.setId(id);
+//        comment.setText("testcommentText");
+//        comment.setTimestamp(LocalDate.now());
+//        comment.setStart(1);
+//        comment.setEnd(2);
+//        
+//        CommentDao commentDao = new CommentDao();
+//        Integer TestID = commentDao.addComment(comment);
+//        commentDao.deleteComment(TestID);
+//        assertEquals(new CommentDao().getComments(TestID),new ArrayList<CommentDto>()); 
     }
 }

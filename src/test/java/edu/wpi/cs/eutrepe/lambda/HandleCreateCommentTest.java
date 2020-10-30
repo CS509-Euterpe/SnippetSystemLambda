@@ -24,8 +24,6 @@ import edu.wpi.cs.eutrepe.http.CommentResponse;
  */
 public class HandleCreateCommentTest extends LambdaTest{
 
-    private static final String SAMPLE_INPUT_STRING = "{\"foo\": \"bar\"}";
-    private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
 
     @Test
     public void testHandleCreateComment() throws Exception {

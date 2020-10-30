@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.sql.Date;
 
 import edu.wpi.cs.eutrepe.dto.Language;
@@ -37,6 +38,24 @@ public class SnippetDao {
     	} catch (Exception e){
         	e.printStackTrace();
             throw new Exception("Failed in getting snippet: " + e.getMessage());
+    	}
+    }
+    
+    public ArrayList<SnippetDto> getAllSnippets() throws Exception {
+    	try {
+    		ArrayList<SnippetDto> snippets = new ArrayList<SnippetDto>();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + ";");
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                snippets.add(generateSnippet(resultSet));
+            }
+            resultSet.close();
+            ps.close();
+            
+            return snippets;
+    	} catch (Exception e){
+        	e.printStackTrace();
+            throw new Exception("Failed to get all snippets: " + e.getMessage());
     	}
     }
     
