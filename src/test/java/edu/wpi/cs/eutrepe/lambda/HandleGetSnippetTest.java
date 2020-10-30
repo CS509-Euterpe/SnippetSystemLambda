@@ -28,7 +28,7 @@ public class HandleGetSnippetTest extends LambdaTest {
         snippet.setInfo("testInfo");
         snippet.setName("testName");
         snippet.setLanguage(Language.PYTHON);
-        snippet.setTimestamp(LocalDate.now());
+        snippet.setTimestamp(LocalDate.now().toString());
 		Integer id = snippetDao.addSnippet(snippet);
 		
         final String SAMPLE_INPUT_STRING = String.format("{ \"id\": \"%d\" }", id);

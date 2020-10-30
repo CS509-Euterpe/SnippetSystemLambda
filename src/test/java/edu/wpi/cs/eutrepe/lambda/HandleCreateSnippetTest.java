@@ -31,7 +31,7 @@ public class HandleCreateSnippetTest extends LambdaTest {
         snippet.setInfo("testInfo");
         snippet.setName("testName");
         snippet.setLanguage(Language.PYTHON);
-        snippet.setTimestamp(LocalDate.now());
+        snippet.setTimestamp(LocalDate.now().toString());
         assertNull(snippet.getId());
         
         String input = new Gson().toJson(snippet);

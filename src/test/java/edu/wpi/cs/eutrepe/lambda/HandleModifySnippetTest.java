@@ -41,7 +41,7 @@ public class HandleModifySnippetTest extends LambdaTest {
 		snippet.setName("testName");
 		snippet.setLanguage(Language.JAVA);
 		snippet.setPassword("RBESUCKS");
-		snippet.setTimestamp(LocalDate.now());
+		snippet.setTimestamp(LocalDate.now().toString());
 		
 		
 		SnippetDao testDAO = new SnippetDao();
@@ -61,7 +61,7 @@ public class HandleModifySnippetTest extends LambdaTest {
 		modifysnippet.setLanguage(Language.PYTHON);
 		modifysnippet.setPassword("RBESUCKS1!");
 		modifysnippet.setId(testID);
-		modifysnippet.setTimestamp(LocalDate.now());
+		modifysnippet.setTimestamp(LocalDate.now().toString());
 		
 
 		String modifyinput = new Gson().toJson(modifysnippet);

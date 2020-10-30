@@ -37,7 +37,7 @@ public class HandleDeleteSnippetTest extends LambdaTest{
         snippet.setInfo("testInfo");
         snippet.setName("testName");
         snippet.setLanguage(Language.JAVA);
-        snippet.setTimestamp(LocalDate.now());
+        snippet.setTimestamp(LocalDate.now().toString());
         assertNull(snippet.getId());
         
        

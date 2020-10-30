@@ -40,7 +40,7 @@ public class HandleCreateComment implements RequestStreamHandler {
 			logger.log("COMMENT TYPE: " + comment.getClass().toString());
 			logger.log(comment.toString());
 			CommentResponse res = new CommentResponse();
-
+//
 			CommentDao commentDao = new CommentDao();
 			try {
 				Integer id = commentDao.addComment(comment);

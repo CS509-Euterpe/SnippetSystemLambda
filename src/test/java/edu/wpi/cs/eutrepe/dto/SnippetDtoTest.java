@@ -14,7 +14,7 @@ public class SnippetDtoTest {
 	final String info = "dumbInfo";
 	final String name = "dumbName";
 	final String password = "dumbPassword";
-	final LocalDate timestamp = LocalDate.now();
+	final String timestamp = LocalDate.now().toString();
 	
 	@Test
 	public void testCreateSnippetDto() {
