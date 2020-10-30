@@ -34,6 +34,8 @@ public class SnippetDtoTest {
 		snippet.setInfo(info);
 		snippet.setLanguage(Language.JAVA);
 		snippet.setTimestamp(timestamp);
+		snippet.setPassword(password);
+		snippet.setName(name);
 		
 		assertEquals(snippet.comments, new ArrayList<CommentDto>());
 		assertEquals(snippet.content, content);

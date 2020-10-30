@@ -62,6 +62,28 @@ public class SnippetDao {
     	}
     }
     
+    public Integer modifySnippet(SnippetDto snippet, Integer id) throws Exception {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("UPDATE " + tblName + " SET info = ?,language = ? ,timestamp = ?,content = ?,password = ?,name = ? "+"WHERE id = "+id+";", Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1,  snippet.getInfo());
+            ps.setInt(2,  snippet.getLanguage().ordinal());
+            ps.setDate(3,  Date.valueOf(snippet.getTimestamp()));
+            ps.setString(4,  snippet.getContent());
+            ps.setString(5,  snippet.getPassword());
+            ps.setString(6,  snippet.getName());
+            ps.execute();
+            ResultSet resultSet = ps.getGeneratedKeys();
+            while(resultSet.next()) {
+            	id = resultSet.getInt(1);
+            }
+    		return id;
+    	} catch(Exception e) {
+        	e.printStackTrace();
+            throw new Exception("Failed in adding snippet: " + e.getMessage());
+    	}
+    }
+    
+    
     public boolean deleteSnippet(Integer id) throws Exception {
     	try {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM " + tblName + " WHERE id = ?;");

@@ -16,30 +16,69 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 
 import edu.wpi.cs.eutrepe.db.SnippetDao;
+import edu.wpi.cs.eutrepe.dto.Language;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
+import edu.wpi.cs.eutrepe.http.CreateSnippetResponse;
+import edu.wpi.cs.eutrepe.http.ModifySnippetResponse;
 
 public class HandleModifySnippet implements RequestStreamHandler {
+	final String successMessage = "Successfully modified snippet";
+	final String failureMessage = "Failed to modified snippet";
 	LambdaLogger logger;
-	
-    @Override
-    public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
-    	logger = context.getLogger();
+
+	@Override
+	public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
+		logger = context.getLogger();
+
 		BufferedReader reader = new BufferedReader(new InputStreamReader(input, Charset.forName("US-ASCII")));
 		PrintWriter writer = new PrintWriter(
 				new BufferedWriter(new OutputStreamWriter(output, Charset.forName("US-ASCII"))));
-       
-		JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
-		SnippetDao snippetDao = new SnippetDao();
-		logger.log(event.toString());
-		SnippetDto snippet = new Gson().fromJson(event.get("body-json").toString(), SnippetDto.class);
-		logger.log(snippet.toString());
-		JsonObject params = (JsonObject) event.get("params");
-		JsonObject path = (JsonObject) params.get("path");
-		String id = new Gson().fromJson(path.get("id"), String.class);
-		snippet.setId(Integer.parseInt(id));
-		logger.log(snippet.toString());
-    }
 
+		try {
+			JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
+			
+			System.out.println("logger to follow");
+			logger.log(event.toString());
+			SnippetDto snippet = new Gson().fromJson(event.toString(), SnippetDto.class);
+			logger.log(snippet.toString());
+			
+		CreateSnippetResponse res = new CreateSnippetResponse();
+	
+		logger.log(snippet.toString());
+		SnippetDao snippetDao = new SnippetDao();
+		try {
+			Integer id = snippetDao.modifySnippet(snippet, snippet.getId());
+			if (id != null) {
+				snippet.setId(id);
+				res.setHttpCode(200);
+				res.setMsg(successMessage);
+				res.setSnippet(snippet);
+			} else {
+				res.setHttpCode(500);
+				res.setMsg(failureMessage);
+				res.setSnippet(null);
+			}
+		} catch (Exception e) {
+			logger.log(e.getMessage());
+			e.printStackTrace();
+			res.setHttpCode(500);
+			res.setMsg(e.getMessage());
+			res.setSnippet(null);
+		}
+		
+			writer.write(new Gson().toJson(res));
+			if (writer.checkError()) {
+				logger.log("WARNING: Writer encountered an error.");
+			}
+		} catch (IllegalStateException | JsonSyntaxException exception) {
+			logger.log(exception.toString());
+		} finally {
+			reader.close();
+			writer.close();
+		}
+
+	}
 }

@@ -1,19 +1,20 @@
 package edu.wpi.cs.eutrepe.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class CommentDto {
-	String id;
+	Integer id;
 	String snippetID;
-	Date timestamp;
+	LocalDate timestamp;
 	String text;
 	Integer start;
 	Integer end;
 	
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getSnippetID() {
@@ -22,10 +23,10 @@ public class CommentDto {
 	public void setSnippetID(String snippetID) {
 		this.snippetID = snippetID;
 	}
-	public Date getTimestamp() {
+	public LocalDate getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(Date timestamp) {
+	public void setTimestamp(LocalDate timestamp) {
 		this.timestamp = timestamp;
 	}
 	public String getText() {

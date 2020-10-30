@@ -18,8 +18,7 @@ import com.google.gson.Gson;
 import edu.wpi.cs.eutrepe.db.SnippetDao;
 import edu.wpi.cs.eutrepe.dto.Language;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
-import edu.wpi.cs.eutrepe.http.CreateSnippetResponse;
-import edu.wpi.cs.eutrepe.http.DeleteSnippetResponse;
+
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.

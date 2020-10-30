@@ -2,17 +2,17 @@ package edu.wpi.cs.eutrepe.dto;
 
 import static org.junit.Assert.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.junit.Test;
 
 public class CommentDtoTest {
 	final Integer start = 4;
 	final Integer end = 0;
-	final String id = "dumbID";
+	final Integer id = 1;
 	final String snippetID = "dumbSnippetID";
 	final String text = "dumbText";
-	final Date date = new Date();
+	final LocalDate date = LocalDate.now();
 
 	@Test
 	public void testCreateCommentDto() {
