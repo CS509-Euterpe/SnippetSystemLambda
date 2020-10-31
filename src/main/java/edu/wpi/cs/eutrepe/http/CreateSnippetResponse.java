@@ -3,15 +3,15 @@ package edu.wpi.cs.eutrepe.http;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
 
 public class CreateSnippetResponse {
-	SnippetDto snippet;
+	SnippetDto content;
 	Integer httpCode;
 	String msg;
 	
 	public SnippetDto getSnippet() {
-		return snippet;
+		return content;
 	}
 	public void setSnippet(SnippetDto snippet) {
-		this.snippet = snippet;
+		this.content = snippet;
 	}
 	public Integer getHttpCode() {
 		return httpCode;
@@ -32,7 +32,7 @@ public class CreateSnippetResponse {
 		int result = 1;
 		result = prime * result + ((httpCode == null) ? 0 : httpCode.hashCode());
 		result = prime * result + ((msg == null) ? 0 : msg.hashCode());
-		result = prime * result + ((snippet == null) ? 0 : snippet.hashCode());
+		result = prime * result + ((content == null) ? 0 : content.hashCode());
 		return result;
 	}
 	
@@ -55,16 +55,16 @@ public class CreateSnippetResponse {
 				return false;
 		} else if (!msg.equals(other.msg))
 			return false;
-		if (snippet == null) {
-			if (other.snippet != null)
+		if (content == null) {
+			if (other.content != null)
 				return false;
-		} else if (!snippet.equals(other.snippet))
+		} else if (!content.equals(other.content))
 			return false;
 		return true;
 	}
 	
 	@Override
 	public String toString() {
-		return "CreateSnippetResponse [snippet=" + snippet + ", httpCode=" + httpCode + ", msg=" + msg + "]";
+		return "CreateSnippetResponse [snippet=" + content + ", httpCode=" + httpCode + ", msg=" + msg + "]";
 	}
 }
