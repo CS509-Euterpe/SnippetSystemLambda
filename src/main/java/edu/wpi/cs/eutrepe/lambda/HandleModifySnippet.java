@@ -37,15 +37,11 @@ public class HandleModifySnippet implements RequestStreamHandler {
 
 		try {
 			JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
-			
-			System.out.println("logger to follow");
 			logger.log(event.toString());
-			SnippetDto snippet = new Gson().fromJson(event.toString(), SnippetDto.class);
+			SnippetDto snippet = new Gson().fromJson(event.get("body-json").toString(), SnippetDto.class);
 			logger.log(snippet.toString());
 			
 		SnippetResponse res = new SnippetResponse();
-	
-		logger.log(snippet.toString());
 		SnippetDao snippetDao = new SnippetDao();
 		try {
 			Integer id = snippetDao.modifySnippet(snippet, snippet.getId());
