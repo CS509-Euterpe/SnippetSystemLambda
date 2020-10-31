@@ -17,10 +17,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import edu.wpi.cs.eutrepe.db.CommentDao;
-import edu.wpi.cs.eutrepe.db.SnippetDao;
 import edu.wpi.cs.eutrepe.dto.CommentDto;
 import edu.wpi.cs.eutrepe.http.CommentResponse;
-import edu.wpi.cs.eutrepe.http.CreateSnippetResponse;
 
 public class HandleCreateComment implements RequestStreamHandler {
 	final String successMessage = "Successfully created comment";

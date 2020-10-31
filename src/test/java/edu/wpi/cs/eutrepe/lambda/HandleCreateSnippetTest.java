@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import edu.wpi.cs.eutrepe.db.SnippetDao;
 import edu.wpi.cs.eutrepe.dto.Language;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
-import edu.wpi.cs.eutrepe.http.CreateSnippetResponse;
+import edu.wpi.cs.eutrepe.http.SnippetResponse;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
@@ -38,7 +38,7 @@ public class HandleCreateSnippetTest extends LambdaTest {
         InputStream inputStream = new ByteArrayInputStream(input.getBytes());
         OutputStream output = new ByteArrayOutputStream();
         handler.handleRequest(inputStream, output, createContext("create"));
-        CreateSnippetResponse snippetResponse = new Gson().fromJson(output.toString(), CreateSnippetResponse.class);
+        SnippetResponse snippetResponse = new Gson().fromJson(output.toString(), SnippetResponse.class);
         SnippetDto savedSnippet = snippetResponse.getSnippet();
         assertNotNull(savedSnippet.getId());
         snippet.setId(savedSnippet.getId());
@@ -57,7 +57,7 @@ public class HandleCreateSnippetTest extends LambdaTest {
         SnippetDto snippet = new SnippetDto();
         assertNull(snippet.getId());
         handler.handleRequest(inputStream, output, createContext("create"));
-        CreateSnippetResponse snippetResponse = new Gson().fromJson(output.toString(), CreateSnippetResponse.class);
+        SnippetResponse snippetResponse = new Gson().fromJson(output.toString(), SnippetResponse.class);
         assertTrue(snippetResponse.getHttpCode().equals(500));
     }
 }

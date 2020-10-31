@@ -19,10 +19,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import edu.wpi.cs.eutrepe.db.SnippetDao;
-import edu.wpi.cs.eutrepe.dto.Language;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
-import edu.wpi.cs.eutrepe.http.CreateSnippetResponse;
-import edu.wpi.cs.eutrepe.http.ModifySnippetResponse;
+import edu.wpi.cs.eutrepe.http.SnippetResponse;
 
 public class HandleModifySnippet implements RequestStreamHandler {
 	final String successMessage = "Successfully modified snippet";
@@ -45,7 +43,7 @@ public class HandleModifySnippet implements RequestStreamHandler {
 			SnippetDto snippet = new Gson().fromJson(event.toString(), SnippetDto.class);
 			logger.log(snippet.toString());
 			
-		CreateSnippetResponse res = new CreateSnippetResponse();
+		SnippetResponse res = new SnippetResponse();
 	
 		logger.log(snippet.toString());
 		SnippetDao snippetDao = new SnippetDao();

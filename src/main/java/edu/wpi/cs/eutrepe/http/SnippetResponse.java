@@ -2,7 +2,7 @@ package edu.wpi.cs.eutrepe.http;
 
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
 
-public class ModifySnippetResponse {
+public class SnippetResponse {
 	SnippetDto content;
 	Integer httpCode;
 	String msg;
@@ -10,7 +10,6 @@ public class ModifySnippetResponse {
 	public SnippetDto getSnippet() {
 		return content;
 	}
-
 	public void setSnippet(SnippetDto snippet) {
 		this.content = snippet;
 	}
@@ -45,7 +44,7 @@ public class ModifySnippetResponse {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CreateSnippetResponse other = (CreateSnippetResponse) obj;
+		SnippetResponse other = (SnippetResponse) obj;
 		if (httpCode == null) {
 			if (other.httpCode != null)
 				return false;

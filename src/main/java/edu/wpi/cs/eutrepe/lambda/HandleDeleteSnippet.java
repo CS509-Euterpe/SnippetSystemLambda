@@ -18,6 +18,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import edu.wpi.cs.eutrepe.db.SnippetDao;
+import edu.wpi.cs.eutrepe.http.DeleteSnippetResponse;
 
 public class HandleDeleteSnippet implements RequestStreamHandler {
 	final String successMessage = "Successfully deleted snippet";
@@ -34,16 +35,22 @@ public class HandleDeleteSnippet implements RequestStreamHandler {
 		JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
 		SnippetDao snippetDao = new SnippetDao();
 		logger.log(event.toString());
+		DeleteSnippetResponse response = new DeleteSnippetResponse();
 		
 		if (event.get("id") != null) {
             Integer id = new Gson().fromJson(event.get("id"), Integer.class);
             try {
-				boolean status = snippetDao.deleteSnippet(id);
-				writer.write(new Gson().toJson(status));
+            	response.setContent(snippetDao.deleteSnippet(id));
+            	response.setHttpCode(200);
+            	response.setMsg(successMessage);
+				writer.write(new Gson().toJson(response));
 			} catch (Exception e) {
 				logger.log(e.getMessage());
 				e.printStackTrace();
-				writer.write("Failed to delete snippet");
+            	response.setContent(false);
+            	response.setHttpCode(500);
+            	response.setMsg(failureMessage);
+				writer.write(new Gson().toJson(response));
 			} finally {
 				reader.close();
 				writer.close();

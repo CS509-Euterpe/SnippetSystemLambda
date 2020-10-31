@@ -1,30 +1,23 @@
 package edu.wpi.cs.eutrepe.lambda;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.gson.Gson;
 
 import edu.wpi.cs.eutrepe.db.SnippetDao;
-import edu.wpi.cs.eutrepe.dto.CommentDto;
 import edu.wpi.cs.eutrepe.dto.Language;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
-import edu.wpi.cs.eutrepe.http.CreateSnippetResponse;
-import edu.wpi.cs.eutrepe.http.ModifySnippetResponse;
+import edu.wpi.cs.eutrepe.http.SnippetResponse;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
@@ -68,8 +61,8 @@ public class HandleModifySnippetTest extends LambdaTest {
 		InputStream modifyinputStream = new ByteArrayInputStream(modifyinput.getBytes());
 		OutputStream modifyoutput = new ByteArrayOutputStream();
 		modifyhandler.handleRequest(modifyinputStream, modifyoutput, createContext("create"));
-		CreateSnippetResponse modifysnippetResponse = new Gson().fromJson(modifyoutput.toString(),
-				CreateSnippetResponse.class);
+		SnippetResponse modifysnippetResponse = new Gson().fromJson(modifyoutput.toString(),
+				SnippetResponse.class);
 
 		//check that the SQL Entry has been updated
 		assertEquals(testDAO.getSnippet(testID).getContent(),modifysnippet.getContent());
@@ -95,7 +88,7 @@ public class HandleModifySnippetTest extends LambdaTest {
 		assertNull(badsnippet.getId());
 		
 		badhandler.handleRequest(badmodifyinputStream, badmofidyoutput, createContext("create"));
-		CreateSnippetResponse snippetResponse = new Gson().fromJson(badmofidyoutput.toString(), CreateSnippetResponse.class);
+		SnippetResponse snippetResponse = new Gson().fromJson(badmofidyoutput.toString(), SnippetResponse.class);
 		assertTrue(snippetResponse.getHttpCode().equals(500));
 
 	}
