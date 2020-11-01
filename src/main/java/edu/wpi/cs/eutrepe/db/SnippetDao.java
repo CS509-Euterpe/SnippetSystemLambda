@@ -121,12 +121,14 @@ public class SnippetDao {
         String content = resultSet.getString("content");
         String info = resultSet.getString("info");
         String timestamp = resultSet.getDate("timestamp").toString();
+        String name = resultSet.getString("name").toString();
         SnippetDto snippet = new SnippetDto();
         snippet.setContent(content);
         snippet.setId(id);
         snippet.setInfo(info);
         snippet.setLanguage(Language.values()[resultSet.getInt("language")]);
         snippet.setTimestamp(timestamp);
+        snippet.setName(name);
         return snippet;
 	}
 }
