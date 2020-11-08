@@ -17,11 +17,11 @@ public class DatabaseUtil {
 	// Make sure matches Schema created from MySQL WorkBench
 	// Make sysEnv variable lambdaTesting so we know we are locally testing
 	public final static String lambdaTesting = "lambdaTesting";
-	public final static String dbName = "Snippet";
+	public final static String dbName = "Default";
 	public final static String testName = "test";
 	final static String dbUsername = "admin";
-	final static String dbPassword = "admin123";
-	final static String rdsMySqlDatabaseUrl = "eutrepe.cnejvyieslew.us-east-1.rds.amazonaws.com";
+	final static String dbPassword = "Benzonatate";
+	final static String rdsMySqlDatabaseUrl = "database-1.cnejvyieslew.us-east-1.rds.amazonaws.com";
 	
 	// pooled across all usages.
 	static Connection conn;

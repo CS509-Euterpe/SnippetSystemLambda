@@ -13,7 +13,7 @@ import edu.wpi.cs.eutrepe.dto.SnippetDto;
 
 public class CommentDao {
 	java.sql.Connection conn;
-	final String tblName = "Comments";   // Exact capitalization
+	final String tblName = "Comment";   // Exact capitalization
 
     public CommentDao() {
     	try  {
