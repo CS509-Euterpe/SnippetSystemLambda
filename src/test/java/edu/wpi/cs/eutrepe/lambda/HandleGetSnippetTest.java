@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import edu.wpi.cs.eutrepe.db.SnippetDao;
+import edu.wpi.cs.eutrepe.dto.Language;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
 
 /**
@@ -26,10 +27,11 @@ public class HandleGetSnippetTest extends LambdaTest {
         snippet.setContent("testContent");
         snippet.setInfo("testInfo");
         snippet.setName("testName");
-        snippet.setTimestamp(LocalDate.now());
+        snippet.setLanguage(Language.PYTHON);
+        snippet.setTimestamp(LocalDate.now().toString());
 		Integer id = snippetDao.addSnippet(snippet);
 		
-        final String SAMPLE_INPUT_STRING = String.format("{ \"pathParameters\": { \"id\": \"%d\"  } }", id);
+        final String SAMPLE_INPUT_STRING = String.format("{ \"id\": \"%d\" }", id);
         InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING.getBytes());;
         OutputStream output = new ByteArrayOutputStream();
 

@@ -18,7 +18,7 @@ import com.google.gson.JsonSyntaxException;
 
 import edu.wpi.cs.eutrepe.db.SnippetDao;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
-import edu.wpi.cs.eutrepe.http.CreateSnippetResponse;
+import edu.wpi.cs.eutrepe.http.SnippetResponse;
 
 public class HandleCreateSnippet implements RequestStreamHandler {
 	final String successMessage = "Successfully saved snippet";
@@ -36,7 +36,7 @@ public class HandleCreateSnippet implements RequestStreamHandler {
 			logger.log("STREAM TYPE: " + input.getClass().toString());
 			logger.log("SNIPPET TYPE: " + snippet.getClass().toString());
 			logger.log(snippet.toString());
-			CreateSnippetResponse res = new CreateSnippetResponse();
+			SnippetResponse res = new SnippetResponse();
 
 			SnippetDao snippetDao = new SnippetDao();
 			try {

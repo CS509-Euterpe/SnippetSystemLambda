@@ -1,34 +1,97 @@
 package edu.wpi.cs.eutrepe.lambda;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDate;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import com.google.gson.Gson;
+
+import edu.wpi.cs.eutrepe.db.SnippetDao;
+import edu.wpi.cs.eutrepe.dto.Language;
+import edu.wpi.cs.eutrepe.dto.SnippetDto;
+import edu.wpi.cs.eutrepe.http.SnippetResponse;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class HandleModifySnippetTest {
+public class HandleModifySnippetTest extends LambdaTest {
 
-    private static final String SAMPLE_INPUT_STRING = "{\"foo\": \"bar\"}";
-    private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
+	@Test
+	public void testHandleModifySnippet() throws Exception {
+		// create a snippet to modify
+		SnippetDto snippet = new SnippetDto();
+		snippet.setComments(null);
+		snippet.setContent("testContent");
+		snippet.setInfo("testInfo");
+		snippet.setName("testName");
+		snippet.setLanguage(Language.JAVA);
+		snippet.setPassword("RBESUCKS");
+		snippet.setTimestamp(LocalDate.now().toString());
+		
+		
+		SnippetDao testDAO = new SnippetDao();
+		Integer testID = testDAO.addSnippet(snippet);
+		
+		//check that the SQL Entry is the original entry
+		assertEquals(testDAO.getSnippet(testID).getContent(),snippet.getContent());
+		assertEquals(testDAO.getSnippet(testID).getLanguage(),snippet.getLanguage());
+		assertEquals(testDAO.getSnippet(testID).getComments(),snippet.getComments());
+		
+		//apply modified snippet
+		HandleModifySnippet modifyhandler = new HandleModifySnippet();
+		SnippetDto modifysnippet = new SnippetDto();
+		modifysnippet.setContent("modifiedTestContent");
+		modifysnippet.setInfo("modifiedTestInfo");
+		modifysnippet.setName("modifiedTestName");
+		modifysnippet.setLanguage(Language.PYTHON);
+		modifysnippet.setPassword("RBESUCKS1!");
+		modifysnippet.setId(testID);
+		modifysnippet.setTimestamp(LocalDate.now().toString());
+		
 
-    @Test
-    public void testHandleModifySnippet() throws IOException {
-        HandleModifySnippet handler = new HandleModifySnippet();
+		String modifyinput = new Gson().toJson(modifysnippet);
+		InputStream modifyinputStream = new ByteArrayInputStream(modifyinput.getBytes());
+		OutputStream modifyoutput = new ByteArrayOutputStream();
+		modifyhandler.handleRequest(modifyinputStream, modifyoutput, createContext("create"));
+		SnippetResponse modifysnippetResponse = new Gson().fromJson(modifyoutput.toString(),
+				SnippetResponse.class);
 
-        InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING.getBytes());;
-        OutputStream output = new ByteArrayOutputStream();
+		//check that the SQL Entry has been updated
+		assertEquals(testDAO.getSnippet(testID).getContent(),modifysnippet.getContent());
+		assertEquals(testDAO.getSnippet(testID).getLanguage(),modifysnippet.getLanguage());
+		assertEquals(testDAO.getSnippet(testID).getComments(),modifysnippet.getComments());
+		
+		// delete snippet
+		SnippetDao snippetDao = new SnippetDao();
+		snippetDao.deleteSnippet(testID);
+		assertTrue(modifysnippetResponse.getHttpCode().equals(200));
+	}
 
-        handler.handleRequest(input, output, null);
+	@Test
+	public void testBadformatHandleModifySnippet() throws Exception {
 
-        // TODO: validate output here if needed.
-        String sampleOutputString = output.toString();
-        System.out.println(sampleOutputString);
-        Assert.assertEquals(EXPECTED_OUTPUT_STRING, sampleOutputString);
-    }
+		//create bad modified snippet
+		String badInput = "{\"foo\": \"bar\"}";
+		InputStream badmodifyinputStream = new ByteArrayInputStream(badInput.getBytes());
+		OutputStream badmofidyoutput = new ByteArrayOutputStream();
+		HandleModifySnippet badhandler = new HandleModifySnippet();
+		SnippetDto badsnippet = new SnippetDto();
+		
+		assertNull(badsnippet.getId());
+		
+		badhandler.handleRequest(badmodifyinputStream, badmofidyoutput, createContext("create"));
+		SnippetResponse snippetResponse = new Gson().fromJson(badmofidyoutput.toString(), SnippetResponse.class);
+		assertTrue(snippetResponse.getHttpCode().equals(500));
+
+	}
+	
+	
 }

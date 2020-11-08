@@ -3,7 +3,7 @@ package edu.wpi.cs.eutrepe.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.sql.Date;
 
 import edu.wpi.cs.eutrepe.dto.Language;
@@ -40,6 +40,24 @@ public class SnippetDao {
     	}
     }
     
+    public ArrayList<SnippetDto> getAllSnippets() throws Exception {
+    	try {
+    		ArrayList<SnippetDto> snippets = new ArrayList<SnippetDto>();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblName + ";");
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                snippets.add(generateSnippet(resultSet));
+            }
+            resultSet.close();
+            ps.close();
+            
+            return snippets;
+    	} catch (Exception e){
+        	e.printStackTrace();
+            throw new Exception("Failed to get all snippets: " + e.getMessage());
+    	}
+    }
+    
     public Integer addSnippet(SnippetDto snippet) throws Exception {
     	try {
     		Integer id = null;
@@ -62,6 +80,28 @@ public class SnippetDao {
     	}
     }
     
+    public Integer modifySnippet(SnippetDto snippet, Integer id) throws Exception {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("UPDATE " + tblName + " SET info = ?,language = ? ,timestamp = ?,content = ?,password = ?,name = ? "+"WHERE id = "+id+";", Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1,  snippet.getInfo());
+            ps.setInt(2,  snippet.getLanguage().ordinal());
+            ps.setDate(3,  Date.valueOf(snippet.getTimestamp()));
+            ps.setString(4,  snippet.getContent());
+            ps.setString(5,  snippet.getPassword());
+            ps.setString(6,  snippet.getName());
+            ps.execute();
+            ResultSet resultSet = ps.getGeneratedKeys();
+            while(resultSet.next()) {
+            	id = resultSet.getInt(1);
+            }
+    		return id;
+    	} catch(Exception e) {
+        	e.printStackTrace();
+            throw new Exception("Failed in adding snippet: " + e.getMessage());
+    	}
+    }
+    
+    
     public boolean deleteSnippet(Integer id) throws Exception {
     	try {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM " + tblName + " WHERE id = ?;");
@@ -80,13 +120,15 @@ public class SnippetDao {
 		Integer id  = resultSet.getInt("id");
         String content = resultSet.getString("content");
         String info = resultSet.getString("info");
-        LocalDate timestamp = resultSet.getDate("timestamp").toLocalDate();
+        String timestamp = resultSet.getDate("timestamp").toString();
+        String name = resultSet.getString("name").toString();
         SnippetDto snippet = new SnippetDto();
         snippet.setContent(content);
         snippet.setId(id);
         snippet.setInfo(info);
         snippet.setLanguage(Language.values()[resultSet.getInt("language")]);
         snippet.setTimestamp(timestamp);
+        snippet.setName(name);
         return snippet;
 	}
 }

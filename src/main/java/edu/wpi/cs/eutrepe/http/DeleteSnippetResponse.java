@@ -1,17 +1,15 @@
 package edu.wpi.cs.eutrepe.http;
 
-import edu.wpi.cs.eutrepe.dto.SnippetDto;
-
-public class CreateSnippetResponse {
-	SnippetDto snippet;
+public class DeleteSnippetResponse {
+	Boolean content;
 	Integer httpCode;
 	String msg;
 	
-	public SnippetDto getSnippet() {
-		return snippet;
+	public Boolean getContent() {
+		return content;
 	}
-	public void setSnippet(SnippetDto snippet) {
-		this.snippet = snippet;
+	public void setContent(Boolean content) {
+		this.content = content;
 	}
 	public Integer getHttpCode() {
 		return httpCode;
@@ -30,9 +28,9 @@ public class CreateSnippetResponse {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((content == null) ? 0 : content.hashCode());
 		result = prime * result + ((httpCode == null) ? 0 : httpCode.hashCode());
 		result = prime * result + ((msg == null) ? 0 : msg.hashCode());
-		result = prime * result + ((snippet == null) ? 0 : snippet.hashCode());
 		return result;
 	}
 	
@@ -44,7 +42,12 @@ public class CreateSnippetResponse {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CreateSnippetResponse other = (CreateSnippetResponse) obj;
+		DeleteSnippetResponse other = (DeleteSnippetResponse) obj;
+		if (content == null) {
+			if (other.content != null)
+				return false;
+		} else if (!content.equals(other.content))
+			return false;
 		if (httpCode == null) {
 			if (other.httpCode != null)
 				return false;
@@ -55,16 +58,12 @@ public class CreateSnippetResponse {
 				return false;
 		} else if (!msg.equals(other.msg))
 			return false;
-		if (snippet == null) {
-			if (other.snippet != null)
-				return false;
-		} else if (!snippet.equals(other.snippet))
-			return false;
 		return true;
 	}
 	
 	@Override
 	public String toString() {
-		return "CreateSnippetResponse [snippet=" + snippet + ", httpCode=" + httpCode + ", msg=" + msg + "]";
+		return "DeleteSnippetResponse [content=" + content + ", httpCode=" + httpCode + ", msg=" + msg + "]";
 	}
+
 }

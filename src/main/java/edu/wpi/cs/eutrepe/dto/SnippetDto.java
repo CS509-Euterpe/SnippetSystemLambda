@@ -11,11 +11,7 @@ public class SnippetDto {
 	List<CommentDto> comments;
 	Language language;
 	String content;
-	LocalDate timestamp;
-	
-	public SnippetDto() {
-		
-	}
+	String timestamp;
 	
 	public Integer getId() {
 		return id;
@@ -47,10 +43,10 @@ public class SnippetDto {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public LocalDate getTimestamp() {
+	public String getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(LocalDate timestamp) {
+	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
 	public String getPassword() {
