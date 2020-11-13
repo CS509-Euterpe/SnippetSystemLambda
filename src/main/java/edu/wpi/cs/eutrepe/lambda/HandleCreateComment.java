@@ -38,20 +38,24 @@ public class HandleCreateComment implements RequestStreamHandler {
 		try {
 			
 			
-			//CommentDto comment = new Gson().fromJson(reader, CommentDto.class);
-			JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
-			JsonObject params = (JsonObject) event.get("params");
-			System.out.println(event);
-			JsonObject path = (JsonObject) params.get("path");
-			CommentDto comment = new CommentDto();
-			comment.setSnippetID(new Gson().fromJson(path.get("snippetId"), String.class));
-			comment.setText(new Gson().fromJson(path.get("text"), String.class));
-			comment.setTimestamp(LocalDate.now());
-			comment.setStartLine(new Gson().fromJson(path.get("startLine"), Integer.class));
-			comment.setEndLine(new Gson().fromJson(path.get("endLine"), Integer.class));
-			comment.setStartChar(new Gson().fromJson(path.get("startChar"), Integer.class));
-			comment.setEndChar(new Gson().fromJson(path.get("endChar"), Integer.class));
 			
+			JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
+			
+
+			
+			JsonObject region = (JsonObject) event.get("region");
+			//CommentDto comment = new Gson().fromJson(event, CommentDto.class);
+			CommentDto comment = new CommentDto();
+			comment.setSnippetID(new Gson().fromJson(event.get("snippetId"), String.class));
+			comment.setText(new Gson().fromJson(event.get("text"), String.class));
+			comment.setTimestamp(new Gson().fromJson(event.get("timestamp"), String.class));
+			//comment.setRegion(new Gson().fromJson(event.get("region"), String.class));
+			comment.setStartLine(new Gson().fromJson(region.get("startLine"), Integer.class));
+			comment.setEndLine(new Gson().fromJson(region.get("endLine"), Integer.class));
+			comment.setStartChar(new Gson().fromJson(region.get("startChar"), Integer.class));
+			comment.setEndChar(new Gson().fromJson(region.get("endChar"), Integer.class));
+			
+			System.out.println(comment);
 			logger.log("STREAM TYPE: " + input.getClass().toString());
 			logger.log("COMMENT TYPE: " + comment.getClass().toString());
 			

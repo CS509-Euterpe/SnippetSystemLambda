@@ -7,7 +7,7 @@ public class CommentDto {
 	Integer id;
 	@Override
 	public String toString() {
-		return "CommentDto [id=" + id + ", snippetID=" + snippetID + ", timestamp=" + timestamp + ", text=" + text
+		return "CommentDto [id=" + id + ", snippetId=" + snippetId + ", timestamp=" + timestamp + ", text=" + text
 				+ ", startLine=" + startLine + ", endLine=" + endLine + ", startchar=" + startChar + ", endChar="
 				+ endChar + "]";
 	}
@@ -18,7 +18,7 @@ public class CommentDto {
 		result = prime * result + ((endChar == null) ? 0 : endChar.hashCode());
 		result = prime * result + ((endLine == null) ? 0 : endLine.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((snippetID == null) ? 0 : snippetID.hashCode());
+		result = prime * result + ((snippetId == null) ? 0 : snippetId.hashCode());
 		result = prime * result + ((startLine == null) ? 0 : startLine.hashCode());
 		result = prime * result + ((startChar == null) ? 0 : startChar.hashCode());
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
@@ -49,10 +49,10 @@ public class CommentDto {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (snippetID == null) {
-			if (other.snippetID != null)
+		if (snippetId == null) {
+			if (other.snippetId != null)
 				return false;
-		} else if (!snippetID.equals(other.snippetID))
+		} else if (!snippetId.equals(other.snippetId))
 			return false;
 		if (startLine == null) {
 			if (other.startLine != null)
@@ -82,16 +82,16 @@ public class CommentDto {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getSnippetID() {
-		return snippetID;
+	public String getSnippetId() {
+		return snippetId;
 	}
-	public void setSnippetID(String snippetID) {
-		this.snippetID = snippetID;
+	public void setSnippetID(String snippetId) {
+		this.snippetId = snippetId;
 	}
-	public LocalDate getTimestamp() {
+	public String getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(LocalDate timestamp) {
+	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
 	public String getText() {
@@ -124,8 +124,8 @@ public class CommentDto {
 	public void setEndChar(Integer endChar) {
 		this.endChar = endChar;
 	}
-	String snippetID;
-	LocalDate timestamp;
+	String snippetId;
+	String timestamp;
 	String text;
 	Integer startLine;
 	Integer endLine;

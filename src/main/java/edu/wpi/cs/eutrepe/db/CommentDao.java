@@ -46,10 +46,10 @@ public class CommentDao {
     public Integer addComment(CommentDto comment) throws Exception {
     	try {
     		Integer id = null;
-    		PreparedStatement ps = conn.prepareStatement("INSERT INTO " + tblName + " (snippetId,text,timestamp,start,end) values(?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1,  comment.getSnippetID());
+    		PreparedStatement ps = conn.prepareStatement("INSERT INTO " + tblName + " (snippetId,text,timestamp,startLine,endLine,startChar,endChar) values(?,?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1,  comment.getSnippetId());
             ps.setString(2,  comment.getText());
-            ps.setDate(3,  Date.valueOf(comment.getTimestamp())); 
+            ps.setString(3,  comment.getTimestamp()); 
             ps.setInt(4,  comment.getStartLine());
             ps.setInt(5,  comment.getEndLine());
             ps.setInt(6,  comment.getStartChar());
@@ -90,7 +90,7 @@ public class CommentDao {
         Integer endLine = resultSet.getInt("endLine");
         Integer startChar = resultSet.getInt("startChar");
         Integer endChar = resultSet.getInt("endChar");
-        LocalDate timestamp = resultSet.getDate("timestamp").toLocalDate();
+        String timestamp = resultSet.getString("timestamp");
         
         CommentDto comment = new CommentDto();
         comment.setId(id);
@@ -99,7 +99,7 @@ public class CommentDao {
         comment.setStartLine(startLine);
         comment.setEndLine(endLine);
         comment.setStartChar(startChar);
-        comment.setEndChar(endLine);
+        comment.setEndChar(endChar);
         comment.setTimestamp(timestamp);
         return comment;
 	}

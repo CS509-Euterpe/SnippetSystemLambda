@@ -32,7 +32,7 @@ public class HandleCreateCommentTest extends LambdaTest{
         comment.setSnippetID("1");
         //comment.setId(id);
         comment.setText("testcommentText");
-        comment.setTimestamp(LocalDate.now());
+        comment.setTimestamp("NOW");
         comment.setStartLine(1);
         comment.setEndLine(2);
         comment.setStartChar(3);
