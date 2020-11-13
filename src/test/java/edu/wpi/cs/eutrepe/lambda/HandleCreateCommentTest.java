@@ -29,12 +29,14 @@ public class HandleCreateCommentTest extends LambdaTest{
     public void testHandleCreateComment() throws Exception {
         HandleCreateComment handler = new HandleCreateComment();
         CommentDto comment = new CommentDto();
-        //comment.setSnippetID(snippetID);
+        comment.setSnippetID("1");
         //comment.setId(id);
         comment.setText("testcommentText");
         comment.setTimestamp(LocalDate.now());
-        comment.setStart(1);
-        comment.setEnd(2);
+        comment.setStartLine(1);
+        comment.setEndLine(2);
+        comment.setStartChar(3);
+        comment.setEndChar(4);
         
         
         String input = new Gson().toJson(comment);

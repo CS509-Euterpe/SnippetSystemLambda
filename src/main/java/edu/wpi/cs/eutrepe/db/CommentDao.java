@@ -50,8 +50,10 @@ public class CommentDao {
             ps.setString(1,  comment.getSnippetID());
             ps.setString(2,  comment.getText());
             ps.setDate(3,  Date.valueOf(comment.getTimestamp())); 
-            ps.setInt(4,  comment.getStart());
-            ps.setInt(5,  comment.getEnd());
+            ps.setInt(4,  comment.getStartLine());
+            ps.setInt(5,  comment.getEndLine());
+            ps.setInt(6,  comment.getStartChar());
+            ps.setInt(7,  comment.getEndChar());
             ps.execute();
             ResultSet resultSet = ps.getGeneratedKeys();
             while(resultSet.next()) {
@@ -84,15 +86,20 @@ public class CommentDao {
 		Integer id  = resultSet.getInt("id");
 		String snippetID = resultSet.getString("snippetId");
 		String text = resultSet.getString("text");
-        Integer start = resultSet.getInt("start");
-        Integer end = resultSet.getInt("end");
+        Integer startLine = resultSet.getInt("startLine");
+        Integer endLine = resultSet.getInt("endLine");
+        Integer startChar = resultSet.getInt("startChar");
+        Integer endChar = resultSet.getInt("endChar");
         LocalDate timestamp = resultSet.getDate("timestamp").toLocalDate();
+        
         CommentDto comment = new CommentDto();
         comment.setId(id);
         comment.setSnippetID(snippetID);
         comment.setText(text);
-        comment.setStart(start);
-        comment.setEnd(end);
+        comment.setStartLine(startLine);
+        comment.setEndLine(endLine);
+        comment.setStartChar(startChar);
+        comment.setEndChar(endLine);
         comment.setTimestamp(timestamp);
         return comment;
 	}
