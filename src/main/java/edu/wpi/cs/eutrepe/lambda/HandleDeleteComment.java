@@ -18,7 +18,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import edu.wpi.cs.eutrepe.db.CommentDao;
-import edu.wpi.cs.eutrepe.db.SnippetDao;
 
 public class HandleDeleteComment implements RequestStreamHandler {
 	final String successMessage = "Successfully deleted comment";
@@ -33,11 +32,13 @@ public class HandleDeleteComment implements RequestStreamHandler {
 				new BufferedWriter(new OutputStreamWriter(output, Charset.forName("US-ASCII"))));
        
 		JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
+		JsonObject params = (JsonObject) event.get("params");
+		JsonObject path = (JsonObject) params.get("path");
 		CommentDao commentDao = new CommentDao();
 		logger.log(event.toString());
 		
-		if (event.get("id") != null) {
-            Integer id = new Gson().fromJson(event.get("id"), Integer.class);
+		if (path.get("comment-id") != null) {
+            Integer id = new Gson().fromJson(path.get("comment-id"), Integer.class);
             try {
 				boolean status = commentDao.deleteComment(id);
 				writer.write(new Gson().toJson(status));
