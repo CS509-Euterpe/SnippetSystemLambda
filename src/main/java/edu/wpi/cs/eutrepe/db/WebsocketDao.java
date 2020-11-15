@@ -39,7 +39,7 @@ public class WebsocketDao {
             return connections;
     	} catch (Exception e){
         	e.printStackTrace();
-            throw new Exception("Failed in getting comment: " + e.getMessage());
+            throw new Exception("Failed in getting connections: " + e.getMessage());
     	}
     	
     }
@@ -58,7 +58,7 @@ public class WebsocketDao {
     		return id;
     	} catch(Exception e) {
         	e.printStackTrace();
-            throw new Exception("Failed in adding comment: " + e.getMessage());
+            throw new Exception("Failed in adding connections: " + e.getMessage());
     	}
     	
     }
@@ -73,7 +73,7 @@ public class WebsocketDao {
             return (numAffected >= 1);
     	} catch (Exception e) {
         	e.printStackTrace();
-            throw new Exception("Failed in deleting comment: " + e.getMessage());
+            throw new Exception("Failed in deleting connections: " + e.getMessage());
     	}
     	
     }
