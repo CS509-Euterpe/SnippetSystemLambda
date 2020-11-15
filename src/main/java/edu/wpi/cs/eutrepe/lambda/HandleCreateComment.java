@@ -40,20 +40,18 @@ public class HandleCreateComment implements RequestStreamHandler {
 			
 			
 			JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
-			
-
-			
 			JsonObject region = (JsonObject) event.get("region");
 			//CommentDto comment = new Gson().fromJson(event, CommentDto.class);
 			CommentDto comment = new CommentDto();
-			comment.setSnippetID(new Gson().fromJson(event.get("snippetId"), String.class));
+			comment.setSnippetId(new Gson().fromJson(event.get("snippetId"), String.class));
 			comment.setText(new Gson().fromJson(event.get("text"), String.class));
 			comment.setTimestamp(new Gson().fromJson(event.get("timestamp"), String.class));
-			//comment.setRegion(new Gson().fromJson(event.get("region"), String.class));
-			comment.setStartLine(new Gson().fromJson(region.get("startLine"), Integer.class));
-			comment.setEndLine(new Gson().fromJson(region.get("endLine"), Integer.class));
-			comment.setStartChar(new Gson().fromJson(region.get("startChar"), Integer.class));
-			comment.setEndChar(new Gson().fromJson(region.get("endChar"), Integer.class));
+			comment.setName(new Gson().fromJson(event.get("name"), String.class));
+			
+			comment.getRegion().setStartLine(new Gson().fromJson(region.get("startLine"), Integer.class));
+			comment.getRegion().setEndLine(new Gson().fromJson(region.get("endLine"), Integer.class));
+			comment.getRegion().setStartChar(new Gson().fromJson(region.get("startChar"), Integer.class));
+			comment.getRegion().setEndChar(new Gson().fromJson(region.get("endChar"), Integer.class));
 			
 			System.out.println(comment);
 			logger.log("STREAM TYPE: " + input.getClass().toString());
@@ -61,7 +59,6 @@ public class HandleCreateComment implements RequestStreamHandler {
 			
 			logger.log(comment.toString());
 			CommentResponse res = new CommentResponse();
-//
 			CommentDao commentDao = new CommentDao();
 			try {
 				Integer id = commentDao.addComment(comment);

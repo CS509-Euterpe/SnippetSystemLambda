@@ -29,7 +29,7 @@ public class HandleCreateCommentTest extends LambdaTest{
     public void testHandleCreateComment() throws Exception {
         HandleCreateComment handler = new HandleCreateComment();
         CommentDto comment = new CommentDto();
-        comment.setSnippetID("1");
+        comment.setSnippetId("1");
         //comment.setId(id);
         comment.setText("testcommentText");
         comment.setTimestamp("NOW");

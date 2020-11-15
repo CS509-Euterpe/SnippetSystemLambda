@@ -46,14 +46,15 @@ public class CommentDao {
     public Integer addComment(CommentDto comment) throws Exception {
     	try {
     		Integer id = null;
-    		PreparedStatement ps = conn.prepareStatement("INSERT INTO " + tblName + " (snippetId,text,timestamp,startLine,endLine,startChar,endChar) values(?,?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
+    		PreparedStatement ps = conn.prepareStatement("INSERT INTO " + tblName + " (snippetId,text,name,timestamp,startLine,endLine,startChar,endChar) values(?,?,?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1,  comment.getSnippetId());
             ps.setString(2,  comment.getText());
-            ps.setString(3,  comment.getTimestamp()); 
-            ps.setInt(4,  comment.getStartLine());
-            ps.setInt(5,  comment.getEndLine());
-            ps.setInt(6,  comment.getStartChar());
-            ps.setInt(7,  comment.getEndChar());
+            ps.setString(3, comment.getName());
+            ps.setString(4,  comment.getTimestamp()); 
+            ps.setInt(5,  comment.getRegion().getStartLine());
+            ps.setInt(6,  comment.getRegion().getEndLine());
+            ps.setInt(7,  comment.getRegion().getStartChar());
+            ps.setInt(8,  comment.getRegion().getEndChar());
             ps.execute();
             ResultSet resultSet = ps.getGeneratedKeys();
             while(resultSet.next()) {
@@ -84,8 +85,9 @@ public class CommentDao {
     
     private CommentDto generateComment(ResultSet resultSet) throws Exception {
 		Integer id  = resultSet.getInt("id");
-		String snippetID = resultSet.getString("snippetId");
+		String snippetId = resultSet.getString("snippetId");
 		String text = resultSet.getString("text");
+		String name = resultSet.getString("name");
         Integer startLine = resultSet.getInt("startLine");
         Integer endLine = resultSet.getInt("endLine");
         Integer startChar = resultSet.getInt("startChar");
@@ -94,13 +96,15 @@ public class CommentDao {
         
         CommentDto comment = new CommentDto();
         comment.setId(id);
-        comment.setSnippetID(snippetID);
+        comment.setSnippetId(snippetId);
         comment.setText(text);
-        comment.setStartLine(startLine);
-        comment.setEndLine(endLine);
-        comment.setStartChar(startChar);
-        comment.setEndChar(endChar);
+        comment.setName(name);
         comment.setTimestamp(timestamp);
+        comment.getRegion().setStartLine(startLine);
+        comment.getRegion().setEndLine(endLine);
+        comment.getRegion().setStartChar(startChar);
+        comment.getRegion().setEndChar(endChar);
+       
         return comment;
 	}
     
