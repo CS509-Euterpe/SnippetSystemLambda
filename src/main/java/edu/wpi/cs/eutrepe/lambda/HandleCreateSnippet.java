@@ -32,6 +32,7 @@ public class HandleCreateSnippet implements RequestStreamHandler {
 		PrintWriter writer = new PrintWriter(
 				new BufferedWriter(new OutputStreamWriter(output, Charset.forName("US-ASCII"))));
 		try {
+			System.out.println(reader);
 			SnippetDto snippet = new Gson().fromJson(reader, SnippetDto.class);
 			logger.log("STREAM TYPE: " + input.getClass().toString());
 			logger.log("SNIPPET TYPE: " + snippet.getClass().toString());
