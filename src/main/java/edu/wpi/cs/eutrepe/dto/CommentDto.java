@@ -1,7 +1,5 @@
 package edu.wpi.cs.eutrepe.dto;
 
-import java.time.LocalDate;
-import java.util.Date;
 
 public class CommentDto {
 	Integer id;

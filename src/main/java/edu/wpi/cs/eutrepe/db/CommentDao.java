@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import edu.wpi.cs.eutrepe.dto.CommentDto;
 import edu.wpi.cs.eutrepe.dto.Language;
+import edu.wpi.cs.eutrepe.dto.Region;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
 
 public class CommentDao {
@@ -95,15 +96,12 @@ public class CommentDao {
         String timestamp = resultSet.getString("timestamp");
         
         CommentDto comment = new CommentDto();
+        comment.setRegion(new Region(startLine, endLine, startChar, endChar));
         comment.setId(id);
         comment.setSnippetId(snippetId);
         comment.setText(text);
         comment.setName(name);
         comment.setTimestamp(timestamp);
-        comment.getRegion().setStartLine(startLine);
-        comment.getRegion().setEndLine(endLine);
-        comment.getRegion().setStartChar(startChar);
-        comment.getRegion().setEndChar(endChar);
        
         return comment;
 	}
