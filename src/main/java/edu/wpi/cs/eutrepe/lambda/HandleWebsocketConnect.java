@@ -21,6 +21,7 @@ import com.google.gson.JsonObject;
 import edu.wpi.cs.eutrepe.db.WebsocketDao;
 import edu.wpi.cs.eutrepe.dto.ConnectionDto;
 import edu.wpi.cs.eutrepe.dto.WebsocketRegisterDto;
+import edu.wpi.cs.eutrepe.ws.WebsocketUtil;
 
 public class HandleWebsocketConnect implements RequestStreamHandler {
 
@@ -39,12 +40,11 @@ public class HandleWebsocketConnect implements RequestStreamHandler {
 			logger.log(event.toString());
 			JsonObject requestContext = (JsonObject) event.get("requestContext");
 			String connectionId = requestContext.get("connectionId").getAsString();
+			logger.log("Connection:" + connectionId);
 			
 			WebsocketRegisterDto message = new Gson().fromJson(event.get("body").getAsString(), WebsocketRegisterDto.class);
-			
 			ConnectionDto connection = new ConnectionDto(0, connectionId ,message.snippetId);
-			int key = new WebsocketDao().addConnection(connection);
-			
+			int key = new WebsocketDao().addConnection(connection);			
 			int statusCode = key > 0 ? 200: 500;
 	        String response = "{\"statusCode\": " + statusCode + ",  \"connectionId\": \"" + connectionId + "\"}" ;
 			writer.write("{\"statusCode\": 200}");

@@ -1,43 +1,34 @@
 package edu.wpi.cs.eutrepe.lambda;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.amazonaws.services.lambda.runtime.Context;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
 public class HandleWebsocketConnectTest {
 
-    private static Object input;
-
-    @BeforeClass
-    public static void createInput() throws IOException {
-        // TODO: set up your sample input object here.
-        input = null;
-    }
-
-    private Context createContext() {
-        TestContext ctx = new TestContext();
-
-        // TODO: customize your context here if needed.
-        ctx.setFunctionName("Your Function Name");
-
-        return ctx;
-    }
+    private static final String SAMPLE_INPUT_STRING = "{\"foo\": \"bar\"}";
+    private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
 
     @Test
-    public void testHandleWebsocketConnect() {
+    public void testHandleWebsocketConnect() throws IOException {
         HandleWebsocketConnect handler = new HandleWebsocketConnect();
-        Context ctx = createContext();
 
-        String output = handler.handleRequest(input, ctx);
+        InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING.getBytes());;
+        OutputStream output = new ByteArrayOutputStream();
+
+        handler.handleRequest(input, output, null);
 
         // TODO: validate output here if needed.
-        Assert.assertEquals("Hello from Lambda!", output);
+        String sampleOutputString = output.toString();
+        System.out.println(sampleOutputString);
+        Assert.assertEquals(EXPECTED_OUTPUT_STRING, sampleOutputString);
     }
 }
