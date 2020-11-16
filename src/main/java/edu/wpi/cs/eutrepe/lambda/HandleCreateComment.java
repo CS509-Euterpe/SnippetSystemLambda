@@ -67,8 +67,8 @@ public class HandleCreateComment implements RequestStreamHandler {
 					res.setMsg(successMessage);
 					res.setComment(comment);
 					
-					new WebsocketUtil(logger).notifyUsers(Integer.parseInt(comment.getSnippetID()),
-							"{\"eventType\":\"comment\", \"snippetId\":" + comment.getSnippetID());
+					new WebsocketUtil(logger).notifyUsers(Integer.parseInt(comment.getSnippetId()),
+							"{\"eventType\":\"comment\", \"snippetId\":" + comment.getSnippetId() + "}");
 				} else {
 					res.setHttpCode(500);
 					res.setMsg(failureMessage);

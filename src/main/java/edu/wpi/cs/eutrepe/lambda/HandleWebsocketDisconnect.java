@@ -42,9 +42,8 @@ public class HandleWebsocketDisconnect implements RequestStreamHandler {
 			
 			boolean result = new WebsocketDao().deleteConnection(connectionId);
 			
-			int statusCode = result? 201 : 404;
+			int statusCode = result? 200 : 404;
 	        String response = "{\"statusCode\": "+ statusCode +",  \"connectionId\": \"" + connectionId + "\"}" ;
-			writer.write("{\"statusCode\": 200}");
 	        writer.write(response + "\r\n");
 		}
 		catch (Exception e) {

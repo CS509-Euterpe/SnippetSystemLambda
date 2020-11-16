@@ -47,7 +47,6 @@ public class HandleWebsocketConnect implements RequestStreamHandler {
 			int key = new WebsocketDao().addConnection(connection);			
 			int statusCode = key > 0 ? 200: 500;
 	        String response = "{\"statusCode\": " + statusCode + ",  \"connectionId\": \"" + connectionId + "\"}" ;
-			writer.write("{\"statusCode\": 200}");
 	        writer.write(response + "\r\n");
 		}
 		catch (Exception e) {

@@ -60,7 +60,7 @@ public class WebsocketUtil {
 					PostToConnectionRequest post = new PostToConnectionRequest()
 							.withConnectionId(connection.getConnectionId())
 							.withData(ByteBuffer.wrap(message.getBytes()));
-					
+					_logger.log("Notifying " + connection.getConnectionId());
 					PostToConnectionResult postResult = _aws.postToConnection(post);
 					successes++;
 				}
