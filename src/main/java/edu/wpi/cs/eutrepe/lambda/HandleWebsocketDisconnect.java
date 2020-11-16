@@ -44,12 +44,18 @@ public class HandleWebsocketDisconnect implements RequestStreamHandler {
 			
 			int statusCode = result? 200 : 404;
 	        String response = "{\"statusCode\": "+ statusCode +",  \"connectionId\": \"" + connectionId + "\"}" ;
+			writer.write("{\"statusCode\": 200}");
 	        writer.write(response + "\r\n");
 		}
 		catch (Exception e) {
 			logger.log("Error:" + e.toString());
+			writer.write("{\"error\": " + e.getMessage() + "}");
+			writer.write("{\"statusCode\": 500}");
+			writer.write("\r\n");
+		} finally {
+			reader.close();
+			writer.close();
 		}
-		writer.write("{\"statusCode\": 500}");
 	}
 
 }

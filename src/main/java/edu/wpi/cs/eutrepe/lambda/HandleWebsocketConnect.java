@@ -35,7 +35,8 @@ public class HandleWebsocketConnect implements RequestStreamHandler {
 				new BufferedWriter(new OutputStreamWriter(output, Charset.forName("US-ASCII"))));
 		try 
 		{
-			JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);      
+			JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);     
+			logger.log(event.toString());
 			JsonObject requestContext = (JsonObject) event.get("requestContext");
 			String connectionId = requestContext.get("connectionId").getAsString();
 			
@@ -46,12 +47,18 @@ public class HandleWebsocketConnect implements RequestStreamHandler {
 			
 			int statusCode = key > 0 ? 200: 500;
 	        String response = "{\"statusCode\": " + statusCode + ",  \"connectionId\": \"" + connectionId + "\"}" ;
+			writer.write("{\"statusCode\": 200}");
 	        writer.write(response + "\r\n");
 		}
 		catch (Exception e) {
 			logger.log(e.getMessage());
+			writer.write("{\"error\": " + e.getMessage() + "}");
+			writer.write("{\"statusCode\": 500}");
+			writer.write("\r\n");
+		} finally {
+			reader.close();
+			writer.close();
 		}
-		writer.write("{\"statusCode\": 500}");
 	}
 
 }
