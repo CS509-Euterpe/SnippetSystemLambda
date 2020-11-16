@@ -23,8 +23,8 @@ public class WebsocketUtil {
 	
 	public WebsocketUtil(LambdaLogger logger) throws ClassNotFoundException
 	{
-		//Class.forName("com.amazonaws.services.apigatewaymanagementapi.AmazonApiGatewayManagementApiClient");
-		//Class.forName("com.amazonaws.services.apigatewaymanagementapi.AmazonApiGatewayManagementApiClientBuilder");
+		Class.forName("com.amazonaws.services.apigatewaymanagementapi.AmazonApiGatewayManagementApiClient");
+		Class.forName("com.amazonaws.services.apigatewaymanagementapi.AmazonApiGatewayManagementApiClientBuilder");
 		
 		_logger = logger;
 
