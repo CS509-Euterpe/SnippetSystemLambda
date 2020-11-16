@@ -26,7 +26,6 @@ public class CommentResponse {
 		this.comment = comment;
 	}
 	
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

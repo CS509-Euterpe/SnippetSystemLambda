@@ -9,26 +9,33 @@ import java.io.OutputStream;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.google.gson.Gson;
+
+import edu.wpi.cs.eutrepe.db.DatabaseUtil;
+import edu.wpi.cs.eutrepe.db.SnippetDao;
+
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class HandleGetAllSnippetsTest {
-
+public class HandleGetAllSnippetsTest extends LambdaTest{
+	
+     
     private static final String SAMPLE_INPUT_STRING = "{\"foo\": \"bar\"}";
     private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
 
     @Test
     public void testHandleGetAllSnippets() throws IOException {
         HandleGetAllSnippets handler = new HandleGetAllSnippets();
-
-        InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING.getBytes());;
+       
+        SnippetDao snippetDao = new SnippetDao();
+        
+        String input = new Gson().toJson();
+        InputStream inputStream = new ByteArrayInputStream(new byte[]);
         OutputStream output = new ByteArrayOutputStream();
-
-        handler.handleRequest(input, output, null);
-
-        // TODO: validate output here if needed.
-        String sampleOutputString = output.toString();
-        System.out.println(sampleOutputString);
-        Assert.assertEquals(EXPECTED_OUTPUT_STRING, sampleOutputString);
+        handler.handleRequest(inputStream, output, createContext("create"));
+        
+        
+       
+       
     }
 }

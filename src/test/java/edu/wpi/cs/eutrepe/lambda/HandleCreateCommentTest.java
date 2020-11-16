@@ -2,6 +2,7 @@ package edu.wpi.cs.eutrepe.lambda;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,12 +30,15 @@ public class HandleCreateCommentTest extends LambdaTest{
     public void testHandleCreateComment() throws Exception {
         HandleCreateComment handler = new HandleCreateComment();
         CommentDto comment = new CommentDto();
-        //comment.setSnippetID(snippetID);
+        comment.setSnippetId("1");
         //comment.setId(id);
         comment.setText("testcommentText");
-        comment.setTimestamp(LocalDate.now());
-        comment.setStart(1);
-        comment.setEnd(2);
+        comment.setTimestamp(LocalDate.now().toString());
+        comment.setName("Tyler");
+        comment.getRegion().setStartLine(1);
+        comment.getRegion().setEndLine(2);
+        comment.getRegion().setStartChar(3);
+        comment.getRegion().setEndChar(4);
         
         
         String input = new Gson().toJson(comment);
@@ -45,7 +49,9 @@ public class HandleCreateCommentTest extends LambdaTest{
         CommentDto savedComment = commentResponse.getComment();
         assertNotNull(savedComment.getId());
         comment.setId(savedComment.getId());
-        assertEquals(savedComment, comment);
+        System.out.println(savedComment.toString());
+        System.out.println(comment.toString());
+        assertTrue(savedComment.equals(comment));
        
         CommentDao commentDao = new CommentDao();
         commentDao.deleteComment(savedComment.getId());

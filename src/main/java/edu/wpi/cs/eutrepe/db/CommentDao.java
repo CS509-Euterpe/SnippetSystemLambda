@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import edu.wpi.cs.eutrepe.dto.CommentDto;
 import edu.wpi.cs.eutrepe.dto.Language;
+import edu.wpi.cs.eutrepe.dto.Region;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
 
 public class CommentDao {
@@ -46,12 +47,15 @@ public class CommentDao {
     public Integer addComment(CommentDto comment) throws Exception {
     	try {
     		Integer id = null;
-    		PreparedStatement ps = conn.prepareStatement("INSERT INTO " + tblName + " (snippetId,text,timestamp,start,end) values(?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1,  comment.getSnippetID());
+    		PreparedStatement ps = conn.prepareStatement("INSERT INTO " + tblName + " (snippetId,text,name,timestamp,startLine,endLine,startChar,endChar) values(?,?,?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1,  comment.getSnippetId());
             ps.setString(2,  comment.getText());
-            ps.setDate(3,  Date.valueOf(comment.getTimestamp())); 
-            ps.setInt(4,  comment.getStart());
-            ps.setInt(5,  comment.getEnd());
+            ps.setString(3, comment.getName());
+            ps.setString(4,  comment.getTimestamp()); 
+            ps.setInt(5,  comment.getRegion().getStartLine());
+            ps.setInt(6,  comment.getRegion().getEndLine());
+            ps.setInt(7,  comment.getRegion().getStartChar());
+            ps.setInt(8,  comment.getRegion().getEndChar());
             ps.execute();
             ResultSet resultSet = ps.getGeneratedKeys();
             while(resultSet.next()) {
@@ -82,18 +86,23 @@ public class CommentDao {
     
     private CommentDto generateComment(ResultSet resultSet) throws Exception {
 		Integer id  = resultSet.getInt("id");
-		String snippetID = resultSet.getString("snippetId");
+		String snippetId = resultSet.getString("snippetId");
 		String text = resultSet.getString("text");
-        Integer start = resultSet.getInt("start");
-        Integer end = resultSet.getInt("end");
-        LocalDate timestamp = resultSet.getDate("timestamp").toLocalDate();
+		String name = resultSet.getString("name");
+        Integer startLine = resultSet.getInt("startLine");
+        Integer endLine = resultSet.getInt("endLine");
+        Integer startChar = resultSet.getInt("startChar");
+        Integer endChar = resultSet.getInt("endChar");
+        String timestamp = resultSet.getString("timestamp");
+        
         CommentDto comment = new CommentDto();
+        comment.setRegion(new Region(startLine, endLine, startChar, endChar));
         comment.setId(id);
-        comment.setSnippetID(snippetID);
+        comment.setSnippetId(snippetId);
         comment.setText(text);
-        comment.setStart(start);
-        comment.setEnd(end);
+        comment.setName(name);
         comment.setTimestamp(timestamp);
+       
         return comment;
 	}
     

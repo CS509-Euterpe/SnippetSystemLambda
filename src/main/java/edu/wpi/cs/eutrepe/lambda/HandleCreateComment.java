@@ -9,11 +9,14 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import java.time.LocalDate;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import edu.wpi.cs.eutrepe.db.CommentDao;
@@ -23,7 +26,7 @@ import edu.wpi.cs.eutrepe.ws.WebsocketUtil;
 
 public class HandleCreateComment implements RequestStreamHandler {
 	final String successMessage = "Successfully created comment";
-	final String failureMessage = "Failed to delete comment";
+	final String failureMessage = "Failed to create comment";
 	LambdaLogger logger;
 
     @Override
@@ -34,12 +37,27 @@ public class HandleCreateComment implements RequestStreamHandler {
 				new BufferedWriter(new OutputStreamWriter(output, Charset.forName("US-ASCII"))));
        
 		try {
-			CommentDto comment = new Gson().fromJson(reader, CommentDto.class);
+			
+			JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
+			JsonObject region = (JsonObject) event.get("region");
+			//CommentDto comment = new Gson().fromJson(event, CommentDto.class);
+			CommentDto comment = new CommentDto();
+			comment.setSnippetId(new Gson().fromJson(event.get("snippetId"), String.class));
+			comment.setText(new Gson().fromJson(event.get("text"), String.class));
+			comment.setTimestamp(new Gson().fromJson(event.get("timestamp"), String.class));
+			comment.setName(new Gson().fromJson(event.get("name"), String.class));
+			
+			comment.getRegion().setStartLine(new Gson().fromJson(region.get("startLine"), Integer.class));
+			comment.getRegion().setEndLine(new Gson().fromJson(region.get("endLine"), Integer.class));
+			comment.getRegion().setStartChar(new Gson().fromJson(region.get("startChar"), Integer.class));
+			comment.getRegion().setEndChar(new Gson().fromJson(region.get("endChar"), Integer.class));
+			
+			System.out.println(comment);
 			logger.log("STREAM TYPE: " + input.getClass().toString());
 			logger.log("COMMENT TYPE: " + comment.getClass().toString());
+			
 			logger.log(comment.toString());
 			CommentResponse res = new CommentResponse();
-//
 			CommentDao commentDao = new CommentDao();
 			try {
 				Integer id = commentDao.addComment(comment);

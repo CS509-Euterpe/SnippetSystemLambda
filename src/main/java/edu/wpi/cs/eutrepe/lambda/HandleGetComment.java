@@ -34,12 +34,14 @@ public class HandleGetComment implements RequestStreamHandler {
  				new BufferedWriter(new OutputStreamWriter(output, Charset.forName("US-ASCII"))));
  		
  		JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
+ 		JsonObject params = (JsonObject) event.get("params");
+ 		JsonObject path = (JsonObject) params.get("path");
  		CommentDao commentDao = new CommentDao();
  		logger.log(event.toString());
  		
- 		if (event.get("snippetId") != null) {
+ 		if (path.get("id") != null) {
  			ArrayList<CommentDto> comments = new ArrayList<CommentDto>();
-            Integer id = new Gson().fromJson(event.get("snippetId"), Integer.class);
+            Integer id = new Gson().fromJson(path.get("id"), Integer.class);
             try {
  				comments = commentDao.getComments(id);
  				writer.write(new Gson().toJson(comments));

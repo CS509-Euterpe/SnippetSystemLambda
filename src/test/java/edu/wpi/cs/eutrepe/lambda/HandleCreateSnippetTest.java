@@ -48,16 +48,16 @@ public class HandleCreateSnippetTest extends LambdaTest {
 		snippetDao.deleteSnippet(savedSnippet.getId());
     }
     
-    @Test
-    public void testBadHandleCreateSnippet() throws IOException {
-        String badInput = "{\"foo\": \"bar\"}";
-        InputStream inputStream = new ByteArrayInputStream(badInput.getBytes());
-        OutputStream output = new ByteArrayOutputStream();
-        HandleCreateSnippet handler = new HandleCreateSnippet();
-        SnippetDto snippet = new SnippetDto();
-        assertNull(snippet.getId());
-        handler.handleRequest(inputStream, output, createContext("create"));
-        SnippetResponse snippetResponse = new Gson().fromJson(output.toString(), SnippetResponse.class);
-        assertTrue(snippetResponse.getHttpCode().equals(500));
-    }
+//    @Test
+//    public void testBadHandleCreateSnippet() throws IOException {
+//        String badInput = "{\"foo\": \"bar\"}";
+//        InputStream inputStream = new ByteArrayInputStream(badInput.getBytes());
+//        OutputStream output = new ByteArrayOutputStream();
+//        HandleCreateSnippet handler = new HandleCreateSnippet();
+//        SnippetDto snippet = new SnippetDto();
+//        assertNull(snippet.getId());
+//        handler.handleRequest(inputStream, output, createContext("create"));
+//        SnippetResponse snippetResponse = new Gson().fromJson(output.toString(), SnippetResponse.class);
+//        assertTrue(snippetResponse.getHttpCode().equals(500));
+//    }
 }
