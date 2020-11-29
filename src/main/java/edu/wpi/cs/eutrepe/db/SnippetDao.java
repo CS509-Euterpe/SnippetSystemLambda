@@ -120,6 +120,7 @@ public class SnippetDao {
 		Integer id  = resultSet.getInt("id");
         String content = resultSet.getString("content");
         String info = resultSet.getString("info");
+        //String timestamp = "";
         String timestamp = resultSet.getDate("timestamp").toString();
         String name = resultSet.getString("name").toString();
         SnippetDto snippet = new SnippetDto();

@@ -39,9 +39,19 @@ public class HandleDeleteStaleSnippets implements RequestStreamHandler {
   		
   		
   		JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
+		JsonObject params = (JsonObject) event.get("params");
+		JsonObject path = (JsonObject) params.get("path");
+//		CommentDao commentDao = new CommentDao();
+//		logger.log(event.toString());
+//		
+//		if (path.get("comment-id") != null) {
+//            Integer id = new Gson().fromJson(path.get("comment-id"), Integer.class);
+//            try {
+		
+		int days = new Gson().fromJson(path.get("days"), Integer.class);
 		
 		
-		int days = new Gson().fromJson(event.get("days"), Integer.class);
+		
 		CommentDao commentDao = new CommentDao();
   		SnippetDao snippetDao = new SnippetDao();
   		logger.log("Deleting snippets older than "+days+" days");
