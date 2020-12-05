@@ -22,6 +22,7 @@ import com.google.gson.JsonSyntaxException;
 import edu.wpi.cs.eutrepe.db.CommentDao;
 import edu.wpi.cs.eutrepe.dto.CommentDto;
 import edu.wpi.cs.eutrepe.http.CommentResponse;
+import edu.wpi.cs.eutrepe.ws.WebsocketUtil;
 
 public class HandleCreateComment implements RequestStreamHandler {
 	final String successMessage = "Successfully created comment";
@@ -65,6 +66,9 @@ public class HandleCreateComment implements RequestStreamHandler {
 					res.setHttpCode(200);
 					res.setMsg(successMessage);
 					res.setComment(comment);
+					
+					new WebsocketUtil(logger).notifyUsers(Integer.parseInt(comment.getSnippetId()),
+							"{\"eventType\":\"comment\", \"snippetId\":" + comment.getSnippetId() + "}");
 				} else {
 					res.setHttpCode(500);
 					res.setMsg(failureMessage);
