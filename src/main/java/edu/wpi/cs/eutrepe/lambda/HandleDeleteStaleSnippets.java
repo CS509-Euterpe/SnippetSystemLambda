@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -29,16 +30,16 @@ import edu.wpi.cs.eutrepe.dto.SnippetDto;
 
 public class HandleDeleteStaleSnippets implements RequestStreamHandler {
 	LambdaLogger logger;
-    @Override
-    public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
 
-    	logger = context.getLogger();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input, Charset.forName("US-ASCII")));
-  		PrintWriter writer = new PrintWriter(
-  				new BufferedWriter(new OutputStreamWriter(output, Charset.forName("US-ASCII"))));
-  		
-  		
-  		JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
+	@Override
+	public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
+
+		logger = context.getLogger();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(input, Charset.forName("US-ASCII")));
+		PrintWriter writer = new PrintWriter(
+				new BufferedWriter(new OutputStreamWriter(output, Charset.forName("US-ASCII"))));
+
+		JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
 		JsonObject params = (JsonObject) event.get("params");
 		JsonObject path = (JsonObject) params.get("path");
 //		CommentDao commentDao = new CommentDao();
@@ -47,51 +48,60 @@ public class HandleDeleteStaleSnippets implements RequestStreamHandler {
 //		if (path.get("comment-id") != null) {
 //            Integer id = new Gson().fromJson(path.get("comment-id"), Integer.class);
 //            try {
-		
-		int days = new Gson().fromJson(path.get("days"), Integer.class);
-		
-		
-		
-		CommentDao commentDao = new CommentDao();
-  		SnippetDao snippetDao = new SnippetDao();
-  		logger.log("Deleting snippets older than "+days+" days");
 
-             try {
-            	 writer.write("deleting snippets"); 
-            	 
-            	writer.write("deleting comments");
-  				ArrayList<SnippetDto> snippets = snippetDao.getAllSnippets();
-  			
+		int days = new Gson().fromJson(path.get("days"), Integer.class);
+
+		CommentDao commentDao = new CommentDao();
+		SnippetDao snippetDao = new SnippetDao();
+		logger.log("Deleting snippets older than " + days + " days");
+
+		try {
+			writer.write("deleting snippets");
+			writer.write("deleting comments");
+			ArrayList<SnippetDto> snippets = snippetDao.getAllSnippets();
+
 //  				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
 
-  				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-  				
-  				for (SnippetDto cur: snippets)
-  				{
-  					Date parsedDate = dateFormat.parse(cur.getTimestamp());
-  					
-  					Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
-  					Timestamp comparator = new java.sql.Timestamp(System.currentTimeMillis()-(days*86400000));
-  					if(timestamp.before(comparator))
-  					{
-  						List<CommentDto> stalecomments = cur.getComments();
-  						for(CommentDto curr: stalecomments)
-  						{
-  							commentDao.deleteComment(curr.getId());
-  						}
-  						snippetDao.deleteSnippet(cur.getId());
-	
-  					}
-  				}
-  				
-  			} catch (Exception e) {
-  				logger.log(e.getMessage());
-  				e.printStackTrace();
-  				writer.write("Failed to get all snippets");
-  			} finally {
-  				reader.close();
-  				writer.close();
-  			}
-        }
-    }
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+			for (SnippetDto cur : snippets) {
+				Date parsedDate = dateFormat.parse(cur.getTimestamp());
+
+				Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+				Timestamp comparator = new java.sql.Timestamp(System.currentTimeMillis() - (days * 86400000));
+				if (timestamp.before(comparator)) {
+					
+					List<CommentDto> stalecomments = new ArrayList<CommentDto>();
+					
+					
+					try {
+					stalecomments.addAll(commentDao.getComments(cur.getId()));
+					}
+					catch(Exception e)
+					{
+						logger.log("No Comments");
+					}
+					
+					if (stalecomments != null) {
+						for (CommentDto curr : stalecomments) {
+							commentDao.deleteComment(curr.getId());
+						}
+						logger.log("should be deleting snippet");
+						logger.log("" + cur.getId());
+						logger.log(""+snippetDao.deleteSnippet(cur.getId()));
+					}
+
+				}
+			}
+
+		} catch (Exception e) {
+			logger.log("FAILED TO DELETE STALE SNIPPETS");
+			logger.log(e.getMessage());
+			e.printStackTrace();
+			writer.write("Failed to get all snippets");
+		} finally {
+			reader.close();
+			writer.close();
+		}
+	}
+}

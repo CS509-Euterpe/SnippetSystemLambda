@@ -97,7 +97,7 @@ public class SnippetDao {
     		return id;
     	} catch(Exception e) {
         	e.printStackTrace();
-            throw new Exception("Failed in adding snippet: " + e.getMessage());
+            throw new Exception("Failed in modifying snippet: " + e.getMessage());
     	}
     }
     
@@ -112,7 +112,7 @@ public class SnippetDao {
             return (numAffected == 1);
     	} catch (Exception e) {
         	e.printStackTrace();
-            throw new Exception("Failed in getting snippet: " + e.getMessage());
+            throw new Exception("Failed in deleting snippet: " + e.getMessage());
     	}
     }
 
