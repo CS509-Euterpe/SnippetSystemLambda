@@ -89,7 +89,7 @@ public class HandleDeleteStaleSnippets implements RequestStreamHandler {
 						logger.log("should be deleting snippet");
 						logger.log("" + cur.getId());
 						logger.log(""+snippetDao.deleteSnippet(cur.getId()));
-					}
+					} 
 
 				}
 			}
