@@ -120,9 +120,9 @@ public class SnippetDao {
 		Integer id  = resultSet.getInt("id");
         String content = resultSet.getString("content");
         String info = resultSet.getString("info");
-        //String timestamp = "";
         String timestamp = resultSet.getDate("timestamp").toString();
         String name = resultSet.getString("name").toString();
+        String password = resultSet.getString("password").toString();
         SnippetDto snippet = new SnippetDto();
         snippet.setContent(content);
         snippet.setId(id);
@@ -130,6 +130,7 @@ public class SnippetDao {
         snippet.setLanguage(Language.values()[resultSet.getInt("language")]);
         snippet.setTimestamp(timestamp);
         snippet.setName(name);
+        snippet.setPassword(password);
         return snippet;
 	}
 }

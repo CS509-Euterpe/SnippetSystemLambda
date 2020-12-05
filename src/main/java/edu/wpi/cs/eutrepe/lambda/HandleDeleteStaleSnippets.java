@@ -61,12 +61,15 @@ public class HandleDeleteStaleSnippets implements RequestStreamHandler {
             	 
             	writer.write("deleting comments");
   				ArrayList<SnippetDto> snippets = snippetDao.getAllSnippets();
-  				
-  				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+  			
+//  				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+
+  				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
   				
   				for (SnippetDto cur: snippets)
   				{
   					Date parsedDate = dateFormat.parse(cur.getTimestamp());
+  					
   					Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
   					Timestamp comparator = new java.sql.Timestamp(System.currentTimeMillis()-(days*86400000));
   					if(timestamp.before(comparator))

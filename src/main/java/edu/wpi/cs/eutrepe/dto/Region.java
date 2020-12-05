@@ -3,13 +3,13 @@ package edu.wpi.cs.eutrepe.dto;
 
 public class Region {
 	
-	int startLine;
+	
 	@Override
 	public String toString() {
 		return "Region [startLine=" + startLine + ", endLine=" + endLine + ", startChar=" + startChar + ", endChar="
 				+ endChar + "]";
 	}
-
+	int startLine;
 	int endLine;
 	int startChar;
 	int endChar;
