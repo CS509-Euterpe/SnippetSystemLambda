@@ -18,6 +18,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import edu.wpi.cs.eutrepe.db.CommentDao;
+import edu.wpi.cs.eutrepe.dto.CommentDto;
+import edu.wpi.cs.eutrepe.ws.WebsocketUtil;
 
 public class HandleDeleteComment implements RequestStreamHandler {
 	final String successMessage = "Successfully deleted comment";

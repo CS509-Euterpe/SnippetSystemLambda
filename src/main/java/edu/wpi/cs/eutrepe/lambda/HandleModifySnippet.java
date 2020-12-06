@@ -21,6 +21,7 @@ import com.google.gson.JsonSyntaxException;
 import edu.wpi.cs.eutrepe.db.SnippetDao;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
 import edu.wpi.cs.eutrepe.http.SnippetResponse;
+import edu.wpi.cs.eutrepe.ws.WebsocketUtil;
 
 public class HandleModifySnippet implements RequestStreamHandler {
 	final String successMessage = "Successfully modified snippet";
@@ -50,6 +51,8 @@ public class HandleModifySnippet implements RequestStreamHandler {
 				res.setHttpCode(200);
 				res.setMsg(successMessage);
 				res.setSnippet(snippet);
+				new WebsocketUtil(logger).notifyUsers(id,
+						"{\"eventType\":\"snippet\", \"snippetId\":" + id + "}");
 			} else {
 				res.setHttpCode(500);
 				res.setMsg(failureMessage);

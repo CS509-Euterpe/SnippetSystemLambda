@@ -40,7 +40,6 @@ public class HandleCreateComment implements RequestStreamHandler {
 			
 			JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
 			JsonObject region = (JsonObject) event.get("region");
-			//CommentDto comment = new Gson().fromJson(event, CommentDto.class);
 			CommentDto comment = new CommentDto();
 			comment.setSnippetId(new Gson().fromJson(event.get("snippetId"), String.class));
 			comment.setText(new Gson().fromJson(event.get("text"), String.class));
