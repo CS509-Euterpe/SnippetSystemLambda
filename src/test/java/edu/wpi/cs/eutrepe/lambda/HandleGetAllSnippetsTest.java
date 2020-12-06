@@ -29,10 +29,13 @@ public class HandleGetAllSnippetsTest extends LambdaTest{
        
         SnippetDao snippetDao = new SnippetDao();
         
-        String input = new Gson().toJson();
-        InputStream inputStream = new ByteArrayInputStream(new byte[]);
+        String input = new Gson().toJson(null);
+        InputStream inputStream = new ByteArrayInputStream(input.getBytes());
         OutputStream output = new ByteArrayOutputStream();
         handler.handleRequest(inputStream, output, createContext("create"));
+        
+        
+        
         
         
        
