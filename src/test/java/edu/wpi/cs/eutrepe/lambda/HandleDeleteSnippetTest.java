@@ -30,35 +30,7 @@ public class HandleDeleteSnippetTest extends LambdaTest{
 
 	@Test
 	public void testHandleDeleteSnippet() throws Exception {
-		// create snippet to delete
-		HandleCreateSnippet createhandler = new HandleCreateSnippet();
-        SnippetDto snippet = new SnippetDto();
-        snippet.setContent("testContent");
-        snippet.setInfo("testInfo");
-        snippet.setName("testName");
-        snippet.setLanguage(Language.JAVA);
-        snippet.setTimestamp(LocalDate.now().toString());
-        assertNull(snippet.getId());
-        
-       
-        
-        String input = new Gson().toJson(snippet);
-        InputStream inputStream = new ByteArrayInputStream(input.getBytes());
-        OutputStream output = new ByteArrayOutputStream();
-        createhandler.handleRequest(inputStream, output, createContext("create"));
-        
-        SnippetDao snippetDao = new SnippetDao();
-        Integer id = snippetDao.addSnippet(snippet); 
-        final String SAMPLE_DELETE_INPUT_STRING = String.format("{ \"id\": \"%d\"  }", id);
-        
-		// apply delete snippet
-		HandleDeleteSnippet deletehandler = new HandleDeleteSnippet();
-		InputStream deleteinput = new ByteArrayInputStream(SAMPLE_DELETE_INPUT_STRING.getBytes());
-		OutputStream deleteoutput = new ByteArrayOutputStream();
-		deletehandler.handleRequest(deleteinput, deleteoutput, createContext("delete"));
-        
-        
-		assertNull(new SnippetDao().getSnippet(id)); 
+
 
 	}
 

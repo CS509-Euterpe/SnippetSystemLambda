@@ -19,9 +19,10 @@ import edu.wpi.cs.eutrepe.db.CommentDao;
 import edu.wpi.cs.eutrepe.db.SnippetDao;
 import edu.wpi.cs.eutrepe.dto.CommentDto;
 import edu.wpi.cs.eutrepe.dto.Language;
+import edu.wpi.cs.eutrepe.dto.Region;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
 import edu.wpi.cs.eutrepe.http.CommentResponse;
-import edu.wpi.cs.eutrepe.http.CreateSnippetResponse;
+import edu.wpi.cs.eutrepe.http.SnippetResponse;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
@@ -41,20 +42,23 @@ public class HandleGetCommentTest extends LambdaTest{
         snippet.setName("testName");
         snippet.setLanguage(Language.PYTHON);
         snippet.setComments(new ArrayList<CommentDto>());
-        snippet.setTimestamp(LocalDate.now());
+        snippet.setTimestamp("2020-01-25");
+        snippet.setPassword("");
+        
         String input = new Gson().toJson(snippet);
         InputStream inputStream = new ByteArrayInputStream(input.getBytes());
         OutputStream output = new ByteArrayOutputStream();
         snippethandler.handleRequest(inputStream, output, createContext("create"));
-        CreateSnippetResponse snippetResponse = new Gson().fromJson(output.toString(), CreateSnippetResponse.class);
+        SnippetResponse snippetResponse = new Gson().fromJson(output.toString(), SnippetResponse.class);
         SnippetDto savedSnippet = snippetResponse.getSnippet();
+        
+        
         //create comment
         CommentDto comment = new CommentDto();
-        comment.setSnippetID(savedSnippet.getId().toString());
+        comment.setSnippetId(savedSnippet.getId().toString());
         comment.setText("testcommentText");
-        comment.setTimestamp(LocalDate.now());
-        comment.setStart(1);
-        comment.setEnd(2);
+        comment.setTimestamp("2020-12-06");//TODO change time stamp to include seconds and minutes
+        comment.setRegion(new Region(1, 2, 3, 4));
         String commentinput = new Gson().toJson(comment);
         InputStream commentinputStream = new ByteArrayInputStream(commentinput.getBytes());;
         OutputStream commentoutputStream = new ByteArrayOutputStream();
@@ -63,7 +67,7 @@ public class HandleGetCommentTest extends LambdaTest{
         CommentDto savedComment = commentResponse.getComment();
         
         //test get comment by id
-        final String getcommentinput = "{ \"snippetId\": \""+ savedComment.getSnippetID()+"\" }";
+        final String getcommentinput = "{ \"snippetId\": \""+ savedComment.getSnippetId()+"\" }";
         InputStream getcommentinputStream = new ByteArrayInputStream(getcommentinput.getBytes());;
         OutputStream getcommentoutputStream = new ByteArrayOutputStream();
         getcommenthandler.handleRequest(getcommentinputStream, getcommentoutputStream, createContext("create"));

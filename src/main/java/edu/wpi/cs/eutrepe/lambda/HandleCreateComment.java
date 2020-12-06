@@ -35,7 +35,7 @@ public class HandleCreateComment implements RequestStreamHandler {
     	BufferedReader reader = new BufferedReader(new InputStreamReader(input, Charset.forName("US-ASCII")));
 		PrintWriter writer = new PrintWriter(
 				new BufferedWriter(new OutputStreamWriter(output, Charset.forName("US-ASCII"))));
-       
+		CommentResponse res = new CommentResponse();
 		try {
 			
 			JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
@@ -56,9 +56,9 @@ public class HandleCreateComment implements RequestStreamHandler {
 			logger.log("COMMENT TYPE: " + comment.getClass().toString());
 			
 			logger.log(comment.toString());
-			CommentResponse res = new CommentResponse();
+			
 			CommentDao commentDao = new CommentDao();
-			try {
+			
 				Integer id = commentDao.addComment(comment);
 				if (id != null) {
 					comment.setId(id);
@@ -68,25 +68,24 @@ public class HandleCreateComment implements RequestStreamHandler {
 					
 					new WebsocketUtil(logger).notifyUsers(Integer.parseInt(comment.getSnippetId()),
 							"{\"eventType\":\"comment\", \"snippetId\":" + comment.getSnippetId() + "}");
-				} else {
-					res.setHttpCode(500);
-					res.setMsg(failureMessage);
-					res.setComment(null);
-				}
-			} catch (Exception e) {
-				logger.log(e.getMessage());
-				e.printStackTrace();
-				res.setHttpCode(500);
-				res.setMsg(e.getMessage());
-				res.setComment(null);
-			}
+				} 
+			
+				
+				
+			
 
 			writer.write(new Gson().toJson(res));
 			if (writer.checkError()) {
 				logger.log("WARNING: Writer encountered an error.");
 			}
-		} catch (IllegalStateException | JsonSyntaxException exception) {
+		} catch (Exception exception) {
+			res.setHttpCode(500);
+			res.setMsg(failureMessage);
+			res.setMsg(exception.getMessage());
 			logger.log(exception.toString());
+			logger.log(exception.getMessage());
+			exception.printStackTrace();
+			
 		} finally {
 			reader.close();
 			writer.close();
