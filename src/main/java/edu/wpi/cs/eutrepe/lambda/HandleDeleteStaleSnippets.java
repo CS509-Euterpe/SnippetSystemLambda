@@ -56,8 +56,7 @@ public class HandleDeleteStaleSnippets implements RequestStreamHandler {
 		logger.log("Deleting snippets older than " + days + " days");
 
 		try {
-			writer.write("deleting snippets");
-			writer.write("deleting comments");
+			
 			ArrayList<SnippetDto> snippets = snippetDao.getAllSnippets();
 
 //  				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
@@ -85,14 +84,18 @@ public class HandleDeleteStaleSnippets implements RequestStreamHandler {
 					if (stalecomments != null) {
 						for (CommentDto curr : stalecomments) {
 							commentDao.deleteComment(curr.getId());
+							
 						}
 						logger.log("should be deleting snippet");
 						logger.log("" + cur.getId());
 						logger.log(""+snippetDao.deleteSnippet(cur.getId()));
+						
 					} 
 
 				}
 			}
+			
+			writer.write(new Gson().toJson(Boolean.TRUE));
 
 		} catch (Exception e) {
 			logger.log("FAILED TO DELETE STALE SNIPPETS");
