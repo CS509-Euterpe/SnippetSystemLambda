@@ -23,7 +23,7 @@ import edu.wpi.cs.eutrepe.http.SnippetResponse;
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class CreateDeleteSnippetTest extends LambdaTest {
+public class HandleCreateSnippetTest extends LambdaTest {
 
     @Test
     public void testHandleCreateSnippet() throws Exception {

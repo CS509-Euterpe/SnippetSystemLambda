@@ -25,7 +25,7 @@ import edu.wpi.cs.eutrepe.http.CommentResponse;
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class CreateDeleteCommentTest extends LambdaTest{
+public class HandleCreateCommentTest extends LambdaTest{
 
 
     @Test

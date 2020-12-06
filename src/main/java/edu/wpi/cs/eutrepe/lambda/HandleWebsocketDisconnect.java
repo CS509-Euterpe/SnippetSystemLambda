@@ -27,7 +27,7 @@ public class HandleWebsocketDisconnect implements RequestStreamHandler {
 	@Override
 	public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
 		logger = context.getLogger();
-		logger.log("Starting disconnect hadndler");
+		logger.log("Starting disconnect handler");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(input, Charset.forName("US-ASCII")));
 		PrintWriter writer = new PrintWriter(
 				new BufferedWriter(new OutputStreamWriter(output, Charset.forName("US-ASCII"))));

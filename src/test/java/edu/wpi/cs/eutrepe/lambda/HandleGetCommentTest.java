@@ -44,17 +44,20 @@ public class HandleGetCommentTest extends LambdaTest{
         snippet.setComments(new ArrayList<CommentDto>());
         snippet.setTimestamp("2020-01-25");
         snippet.setPassword("");
+        
         String input = new Gson().toJson(snippet);
         InputStream inputStream = new ByteArrayInputStream(input.getBytes());
         OutputStream output = new ByteArrayOutputStream();
         snippethandler.handleRequest(inputStream, output, createContext("create"));
         SnippetResponse snippetResponse = new Gson().fromJson(output.toString(), SnippetResponse.class);
         SnippetDto savedSnippet = snippetResponse.getSnippet();
+        
+        
         //create comment
         CommentDto comment = new CommentDto();
         comment.setSnippetId(savedSnippet.getId().toString());
         comment.setText("testcommentText");
-        comment.setTimestamp("2020-12-06");
+        comment.setTimestamp("2020-12-06");//TODO change time stamp to include seconds and minutes
         comment.setRegion(new Region(1, 2, 3, 4));
         String commentinput = new Gson().toJson(comment);
         InputStream commentinputStream = new ByteArrayInputStream(commentinput.getBytes());;
