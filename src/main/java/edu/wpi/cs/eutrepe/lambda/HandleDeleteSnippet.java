@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 
 import edu.wpi.cs.eutrepe.db.SnippetDao;
 import edu.wpi.cs.eutrepe.http.DeleteSnippetResponse;
+import edu.wpi.cs.eutrepe.ws.WebsocketUtil;
 
 public class HandleDeleteSnippet implements RequestStreamHandler {
 	final String successMessage = "Successfully deleted snippet";
@@ -44,6 +45,8 @@ public class HandleDeleteSnippet implements RequestStreamHandler {
             	response.setHttpCode(200);
             	response.setMsg(successMessage);
 				writer.write(new Gson().toJson(response));
+				new WebsocketUtil(logger).notifyUsers(id,
+						"{\"eventType\":\"snippet\", \"snippetId\":" + id + "}");
 			} catch (Exception e) {
 				logger.log(e.getMessage());
 				e.printStackTrace();

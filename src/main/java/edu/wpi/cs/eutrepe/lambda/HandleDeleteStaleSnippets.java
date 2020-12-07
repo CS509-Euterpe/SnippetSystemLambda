@@ -27,6 +27,7 @@ import edu.wpi.cs.eutrepe.db.CommentDao;
 import edu.wpi.cs.eutrepe.db.SnippetDao;
 import edu.wpi.cs.eutrepe.dto.CommentDto;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
+import edu.wpi.cs.eutrepe.ws.WebsocketUtil;
 
 public class HandleDeleteStaleSnippets implements RequestStreamHandler {
 	LambdaLogger logger;
@@ -89,14 +90,15 @@ public class HandleDeleteStaleSnippets implements RequestStreamHandler {
 						logger.log("should be deleting snippet");
 						logger.log("" + cur.getId());
 						logger.log(""+snippetDao.deleteSnippet(cur.getId()));
+						new WebsocketUtil(logger).notifyUsers(cur.getId(),
+								"{\"eventType\":\"snippet\", \"snippetId\":" + cur.getId() + "}");
 						
 					} 
 
 				}
 			}
-			
-			writer.write(new Gson().toJson(Boolean.TRUE));
-
+			boolean status = true;
+			writer.write(new Gson().toJson(status));
 		} catch (Exception e) {
 			logger.log("FAILED TO DELETE STALE SNIPPETS");
 			logger.log(e.getMessage());
