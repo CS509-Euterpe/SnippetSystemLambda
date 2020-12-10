@@ -1,3 +1,7 @@
+/*
+ * CS-509 Team Eutrepe AWS Application
+ */
+
 package edu.wpi.cs.eutrepe.lambda;
 
 import java.io.BufferedReader;
@@ -69,10 +73,6 @@ public class HandleCreateComment implements RequestStreamHandler {
 					new WebsocketUtil(logger).notifyUsers(Integer.parseInt(comment.getSnippetId()),
 							"{\"eventType\":\"comment\", \"snippetId\":" + comment.getSnippetId() + "}");
 				} 
-			
-				
-				
-			
 
 			writer.write(new Gson().toJson(res));
 			if (writer.checkError()) {

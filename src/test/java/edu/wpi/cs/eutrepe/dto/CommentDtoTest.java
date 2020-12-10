@@ -1,3 +1,7 @@
+/*
+ * CS-509 Team Eutrepe AWS Application Test
+ */
+
 package edu.wpi.cs.eutrepe.dto;
 
 import static org.junit.Assert.*;
@@ -20,18 +24,5 @@ public class CommentDtoTest {
 		assertNull(comment.id);
 		assertNull(comment.text);
 		
-//		comment.setEnd(end);
-//		comment.setId(id);
-//		comment.setSnippetID(snippetID);
-//		comment.setStart(start);
-//		comment.setText(text);
-//		comment.setTimestamp(date);
-//		
-//		assertEquals(comment.end, end);
-//		assertEquals(comment.start, start);
-//		assertEquals(comment.id, id);
-//		assertEquals(comment.snippetID, snippetID);
-//		assertEquals(comment.text, text);
-//		assertEquals(comment.timestamp, date);
 	}
 }

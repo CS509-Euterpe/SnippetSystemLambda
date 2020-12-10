@@ -1,3 +1,7 @@
+/*
+ * CS-509 Team Eutrepe AWS Application Test
+ */
+
 package edu.wpi.cs.eutrepe.lambda;
 
 import java.io.BufferedReader;
@@ -12,7 +16,6 @@ import java.nio.charset.Charset;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -43,12 +46,6 @@ public class HandleDeleteStaleSnippets implements RequestStreamHandler {
 		JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
 		JsonObject params = (JsonObject) event.get("params");
 		JsonObject path = (JsonObject) params.get("path");
-//		CommentDao commentDao = new CommentDao();
-//		logger.log(event.toString());
-//		
-//		if (path.get("comment-id") != null) {
-//            Integer id = new Gson().fromJson(path.get("comment-id"), Integer.class);
-//            try {
 
 		int days = new Gson().fromJson(path.get("days"), Integer.class);
 
@@ -59,9 +56,6 @@ public class HandleDeleteStaleSnippets implements RequestStreamHandler {
 		try {
 			
 			ArrayList<SnippetDto> snippets = snippetDao.getAllSnippets();
-
-//  				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 			for (SnippetDto cur : snippets) {
@@ -89,7 +83,9 @@ public class HandleDeleteStaleSnippets implements RequestStreamHandler {
 						}
 						logger.log("should be deleting snippet");
 						logger.log("" + cur.getId());
+						logger.log("" + cur.getTimestamp());
 						logger.log(""+snippetDao.deleteSnippet(cur.getId()));
+						
 						new WebsocketUtil(logger).notifyUsers(cur.getId(),
 								"{\"eventType\":\"snippet\", \"snippetId\":" + cur.getId() + "}");
 						

@@ -1,3 +1,7 @@
+/*
+ * CS-509 Team Eutrepe AWS Application
+ */
+
 package edu.wpi.cs.eutrepe.lambda;
 
 import java.io.BufferedReader;
@@ -19,6 +23,8 @@ import com.google.gson.JsonObject;
 
 import edu.wpi.cs.eutrepe.db.CommentDao;
 import edu.wpi.cs.eutrepe.dto.CommentDto;
+import edu.wpi.cs.eutrepe.http.CommentResponse;
+import edu.wpi.cs.eutrepe.http.DeleteSnippetResponse;
 import edu.wpi.cs.eutrepe.ws.WebsocketUtil;
 
 public class HandleDeleteComment implements RequestStreamHandler {
@@ -35,15 +41,22 @@ public class HandleDeleteComment implements RequestStreamHandler {
        
 		JsonObject event = new GsonBuilder().create().fromJson(reader, JsonObject.class);
 		JsonObject params = (JsonObject) event.get("params");
+		System.out.println(params.toString());
 		JsonObject path = (JsonObject) params.get("path");
 		CommentDao commentDao = new CommentDao();
 		logger.log(event.toString());
+		CommentResponse response = new CommentResponse();
+		
 		
 		if (path.get("comment-id") != null) {
             Integer id = new Gson().fromJson(path.get("comment-id"), Integer.class);
+            System.out.println(id);
             try {
 				boolean status = commentDao.deleteComment(id);
-				writer.write(new Gson().toJson(status));
+				System.out.println(status);
+            	response.setHttpCode(200);
+            	response.setMsg(successMessage);
+				writer.write(new Gson().toJson(response));
 			} catch (Exception e) {
 				logger.log(e.getMessage());
 				e.printStackTrace();

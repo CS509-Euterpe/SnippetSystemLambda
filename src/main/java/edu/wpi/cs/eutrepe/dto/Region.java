@@ -1,8 +1,11 @@
+/*
+ * CS-509 Team Eutrepe AWS Application
+ */
+
 package edu.wpi.cs.eutrepe.dto;
 
 
 public class Region {
-	
 	
 	@Override
 	public String toString() {
@@ -45,17 +48,6 @@ public class Region {
 	}
 	public void setEndChar(Integer endChar) {
 		this.endChar = endChar;
-	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + endChar;
-		result = prime * result + endLine;
-		result = prime * result + startChar;
-		result = prime * result + startLine;
-		return result;
 	}
 
 	@Override

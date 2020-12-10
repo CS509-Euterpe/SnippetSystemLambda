@@ -1,3 +1,7 @@
+/*
+ * CS-509 Team Eutrepe AWS Application
+ */
+
 package edu.wpi.cs.eutrepe.lambda;
 
 import java.io.BufferedReader;
@@ -20,7 +24,6 @@ import com.google.gson.JsonObject;
 
 import edu.wpi.cs.eutrepe.db.CommentDao;
 import edu.wpi.cs.eutrepe.dto.CommentDto;
-import edu.wpi.cs.eutrepe.ws.WebsocketUtil;
 
 public class HandleGetComment implements RequestStreamHandler {
 	LambdaLogger logger;
