@@ -1,19 +1,24 @@
 package edu.wpi.cs.eutrepe.lambda;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import edu.wpi.cs.eutrepe.db.CommentDao;
 import edu.wpi.cs.eutrepe.db.SnippetDao;
@@ -21,8 +26,7 @@ import edu.wpi.cs.eutrepe.dto.CommentDto;
 import edu.wpi.cs.eutrepe.dto.Language;
 import edu.wpi.cs.eutrepe.dto.Region;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
-import edu.wpi.cs.eutrepe.http.CommentResponse;
-import edu.wpi.cs.eutrepe.http.SnippetResponse;
+
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
@@ -31,8 +35,7 @@ public class HandleGetCommentTest extends LambdaTest{
 
     @Test
     public void testHandleGetComment() throws Exception {
-    	HandleCreateSnippet snippethandler = new HandleCreateSnippet();
-    	HandleCreateComment commenthandler = new HandleCreateComment();
+    	
         HandleGetComment getcommenthandler = new HandleGetComment();
 
         //create snippet
@@ -45,40 +48,59 @@ public class HandleGetCommentTest extends LambdaTest{
         snippet.setTimestamp("2020-01-25");
         snippet.setPassword("");
         
-        String input = new Gson().toJson(snippet);
-        InputStream inputStream = new ByteArrayInputStream(input.getBytes());
-        OutputStream output = new ByteArrayOutputStream();
-        snippethandler.handleRequest(inputStream, output, createContext("create"));
-        SnippetResponse snippetResponse = new Gson().fromJson(output.toString(), SnippetResponse.class);
-        SnippetDto savedSnippet = snippetResponse.getSnippet();
+        SnippetDao snippetDao = new SnippetDao();
+        //check that the snippet id is null when initializing
+        assertNull(snippet.getId());
         
+        //add snippet to DB & check that snippet exists in DB
+
+        int snippetId = snippetDao.addSnippet(snippet);
+        snippet.setId(snippetId);
+        assertNotNull(snippetDao.getSnippet(snippetId));
         
         //create comment
         CommentDto comment = new CommentDto();
-        comment.setSnippetId(savedSnippet.getId().toString());
+        comment.setSnippetId(snippet.getId().toString());
         comment.setText("testcommentText");
-        comment.setTimestamp("2020-12-06");//TODO change time stamp to include seconds and minutes
+        comment.setTimestamp("2020-12-06 00:00:00");//TODO change time stamp to include seconds and minutes
+        comment.setName("snippetcomment");
         comment.setRegion(new Region(1, 2, 3, 4));
-        String commentinput = new Gson().toJson(comment);
-        InputStream commentinputStream = new ByteArrayInputStream(commentinput.getBytes());;
-        OutputStream commentoutputStream = new ByteArrayOutputStream();
-        commenthandler.handleRequest(commentinputStream, commentoutputStream, createContext("create"));
-        CommentResponse commentResponse = new Gson().fromJson(commentoutputStream.toString(), CommentResponse.class);
-        CommentDto savedComment = commentResponse.getComment();
+       
+        //add the comment to the DB
+        CommentDao commentDao = new CommentDao();
+        int crustycommentId = commentDao.addComment(comment);
+        comment.setId(crustycommentId);
         
-        //test get comment by id
-        final String getcommentinput = "{ \"snippetId\": \""+ savedComment.getSnippetId()+"\" }";
-        InputStream getcommentinputStream = new ByteArrayInputStream(getcommentinput.getBytes());;
+        
+        //create JSON to delete snippets older than 11 day
+        JsonObject params = new JsonObject();
+        JsonObject path = new JsonObject();
+        JsonObject daysold = new JsonObject();
+        daysold.addProperty("id", snippet.getId());
+        path.add("path", daysold);
+        params.add("params", path);
+    
+ 
+        //send snippetID as if coming from API Gateway 
+        String input = new Gson().toJson(params);
+        InputStream getcommentinputStream = new ByteArrayInputStream(input.getBytes());;
         OutputStream getcommentoutputStream = new ByteArrayOutputStream();
         getcommenthandler.handleRequest(getcommentinputStream, getcommentoutputStream, createContext("create"));
-        CommentResponse getcommentResponse = new Gson().fromJson(getcommentoutputStream.toString(), CommentResponse.class);
-        CommentDto retrievedComment = getcommentResponse.getComment();
-        assertEquals(retrievedComment,savedComment);
         
-        //delete comment
-        CommentDao commentDao = new CommentDao();
-        commentDao.deleteComment(savedComment.getId());
-        SnippetDao snippetDao = new SnippetDao();
-		snippetDao.deleteSnippet(savedSnippet.getId());
+        JsonArray returnedcomments = JsonParser.parseString(getcommentoutputStream.toString()).getAsJsonArray();
+       
+        
+        CommentDto getcommentResponse = new Gson().fromJson(returnedcomments.get(0), CommentDto.class);
+       
+        //check that the returned comment is equivalent to the original
+        assertEquals(getcommentResponse,comment);
+        
+        //check that comment exists
+        assertNotNull(commentDao.getComments(Integer.parseInt(comment.getSnippetId())));
+        commentDao.deleteComment(getcommentResponse.getId());
+        //check that comment was deleted
+        ArrayList<CommentDto> empty =  new ArrayList<CommentDto>();
+        assertTrue(empty.equals(commentDao.getComments(Integer.parseInt(comment.getSnippetId()))));
+        
     }
 }
