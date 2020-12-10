@@ -1,3 +1,7 @@
+/*
+ * CS-509 Team Eutrepe AWS Application Test
+ */
+
 package edu.wpi.cs.eutrepe.lambda;
 
 import static org.junit.Assert.assertEquals;
@@ -6,27 +10,18 @@ import static org.junit.Assert.assertNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import edu.wpi.cs.eutrepe.db.DatabaseUtil;
 import edu.wpi.cs.eutrepe.db.SnippetDao;
 import edu.wpi.cs.eutrepe.dto.Language;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
 
-/**
- * A simple test harness for locally invoking your Lambda function handler.
- */
 public class HandleGetAllSnippetsTest extends LambdaTest{
 	
      
@@ -36,9 +31,6 @@ public class HandleGetAllSnippetsTest extends LambdaTest{
        
         SnippetDao snippetDao = new SnippetDao();
         
-        //create JSON to delete snippets older than 11 day
-
- 
         //send days as if coming from API Gateway 
         String input = new Gson().toJson("");
         InputStream inputStream = new ByteArrayInputStream(input.getBytes());
@@ -58,8 +50,7 @@ public class HandleGetAllSnippetsTest extends LambdaTest{
         snippetOne.setLanguage(Language.PYTHON);
         snippetOne.setPassword("password");
         snippetOne.setTimestamp(dateFormat.format(new java.sql.Timestamp(System.currentTimeMillis())));
-        //System.out.println(snippet.getTimestamp()); //used for checking time format
-        
+
         //create sample snippet created 10 days ago
         SnippetDto snippetTwo = new SnippetDto();
         snippetTwo.setContent("testContent");
@@ -68,7 +59,6 @@ public class HandleGetAllSnippetsTest extends LambdaTest{
         snippetTwo.setLanguage(Language.PYTHON);
         snippetTwo.setPassword("password");
         snippetTwo.setTimestamp(dateFormat.format(new java.sql.Timestamp(System.currentTimeMillis())));
-        //System.out.println(oldsnippet.getTimestamp());
         //create sample snippet created 100 days ago
         SnippetDto snippetThree = new SnippetDto();
         snippetThree.setContent("testContent");
@@ -77,7 +67,7 @@ public class HandleGetAllSnippetsTest extends LambdaTest{
         snippetThree.setLanguage(Language.PYTHON);
         snippetThree.setPassword("password");
         snippetThree.setTimestamp(dateFormat.format(new java.sql.Timestamp(System.currentTimeMillis())));
-        //System.out.println(crustysnippet.getTimestamp());
+
         
         //check that the snippet ids are null when initializing
         assertNull(snippetOne.getId());
@@ -112,8 +102,9 @@ public class HandleGetAllSnippetsTest extends LambdaTest{
         assertEquals(beforetotalsnippets+3,aftertotalsnippets);
         
         //maybe delete all snippets???
-        
-        
+        snippetDao.deleteSnippet(snippetOne.getId());
+        snippetDao.deleteSnippet(snippetTwo.getId());
+        snippetDao.deleteSnippet(snippetThree.getId());
         
         
        

@@ -1,15 +1,17 @@
+/*
+ * CS-509 Team Eutrepe AWS Application Test
+ */
+
 package edu.wpi.cs.eutrepe.lambda;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -19,11 +21,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import edu.wpi.cs.eutrepe.db.CommentDao;
 import edu.wpi.cs.eutrepe.db.SnippetDao;
 import edu.wpi.cs.eutrepe.dto.CommentDto;
 import edu.wpi.cs.eutrepe.dto.Language;
-import edu.wpi.cs.eutrepe.dto.Region;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
 import edu.wpi.cs.eutrepe.http.SnippetResponse;
 
@@ -55,23 +55,6 @@ public class HandleModifySnippetTest extends LambdaTest {
         snippet.setId(snippetId);
         assertNotNull(snippetDao.getSnippet(snippetId));
 
-//        //create comment
-//        CommentDto comment = new CommentDto();
-//        comment.setSnippetId(snippet.getId().toString());
-//        comment.setText("testcommentText");
-//        comment.setTimestamp("2020-12-06 00:00:00");//TODO change time stamp to include seconds and minutes
-//        comment.setName("snippetcomment");
-//        comment.setRegion(new Region(1, 2, 3, 4));
-//       
-//        //add the comment to the DB
-//        CommentDao commentDao = new CommentDao();
-//        int crustycommentId = commentDao.addComment(comment);
-//        comment.setId(crustycommentId);
-//        ArrayList<CommentDto> commentlist = new ArrayList<CommentDto>();
-//        commentlist.add(comment);
-//        snippet.setComments(commentlist);
-        
-        
         //create snippet that will become the modified snippet
         SnippetDto modsnippet = new SnippetDto();
         modsnippet.setContent("modtestContent");
@@ -88,7 +71,6 @@ public class HandleModifySnippetTest extends LambdaTest {
         //create JSON of a newly modified snippet
         JsonObject body = new JsonObject();
         JsonArray comments = JsonParser.parseString(modsnippet.getComments().toString()).getAsJsonArray();
-        //int beforetotalsnippets=jsonObject.size();
 
         JsonObject snippo = new JsonObject();
         snippo.addProperty("id", snippetId);
@@ -101,15 +83,6 @@ public class HandleModifySnippetTest extends LambdaTest {
         snippo.addProperty("timestamp", modsnippet.getTimestamp());
         //snippo.addProperty("id", modsnippet.getId());
         body.add("body-json", snippo);
-        
-        
-        //create JSON to delete snippets older than 11 day
-//       
-//        JsonObject path = new JsonObject();
-//        JsonObject daysold = new JsonObject();
-//        daysold.addProperty("id", snippet.getId());
-//        path.add("path", daysold);
-//        params.add("params", path);
         
         //send snippetID as if coming from API Gateway 
         String input = new Gson().toJson(body);
@@ -133,23 +106,6 @@ public class HandleModifySnippetTest extends LambdaTest {
         assertNull(snippetDao.getSnippet(modsnippet.getId()));
 	}
 
-	@Test
-	public void testBadformatHandleModifySnippet() throws Exception {
-
-//		//create bad modified snippet
-//		String badInput = "{\"foo\": \"bar\"}";
-//		InputStream badmodifyinputStream = new ByteArrayInputStream(badInput.getBytes());
-//		OutputStream badmofidyoutput = new ByteArrayOutputStream();
-//		HandleModifySnippet badhandler = new HandleModifySnippet();
-//		SnippetDto badsnippet = new SnippetDto();
-//		
-//		assertNull(badsnippet.getId());
-//		
-//		badhandler.handleRequest(badmodifyinputStream, badmofidyoutput, createContext("create"));
-//		SnippetResponse snippetResponse = new Gson().fromJson(badmofidyoutput.toString(), SnippetResponse.class);
-//		assertTrue(snippetResponse.getHttpCode().equals(500));
-
-	}
 	
 	
 }

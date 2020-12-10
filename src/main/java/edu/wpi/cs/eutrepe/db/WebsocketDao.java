@@ -1,17 +1,15 @@
+/*
+ * CS-509 Team Eutrepe AWS Application
+ */
+
 package edu.wpi.cs.eutrepe.db;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
-import edu.wpi.cs.eutrepe.dto.CommentDto;
 import edu.wpi.cs.eutrepe.dto.ConnectionDto;
-import edu.wpi.cs.eutrepe.dto.Language;
-import edu.wpi.cs.eutrepe.dto.SnippetDto;
-
 public class WebsocketDao {
 	java.sql.Connection conn;
 	final String tblName = "Websockets";   // Exact capitalization

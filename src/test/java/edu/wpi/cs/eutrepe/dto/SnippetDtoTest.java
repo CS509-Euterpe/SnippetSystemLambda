@@ -1,9 +1,12 @@
+/*
+ * CS-509 Team Eutrepe AWS Application Test
+ */
+
 package edu.wpi.cs.eutrepe.dto;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.sql.Date;
 import java.time.LocalDate;
 
 import org.junit.Test;

@@ -1,3 +1,7 @@
+/*
+ * CS-509 Team Eutrepe AWS Application
+ */
+
 package edu.wpi.cs.eutrepe.lambda;
 
 import java.io.BufferedReader;

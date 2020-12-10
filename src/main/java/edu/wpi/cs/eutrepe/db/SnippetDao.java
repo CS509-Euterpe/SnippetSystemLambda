@@ -1,3 +1,7 @@
+/*
+ * CS-509 Team Eutrepe AWS Application
+ */
+
 package edu.wpi.cs.eutrepe.db;
 
 import java.sql.PreparedStatement;
@@ -100,7 +104,6 @@ public class SnippetDao {
             throw new Exception("Failed in modifying snippet: " + e.getMessage());
     	}
     }
-    
     
     public boolean deleteSnippet(Integer id) throws Exception {
     	try {

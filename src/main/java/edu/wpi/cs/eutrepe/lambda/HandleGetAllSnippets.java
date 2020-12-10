@@ -1,3 +1,7 @@
+/*
+ * CS-509 Team Eutrepe AWS Application
+ */
+
 package edu.wpi.cs.eutrepe.lambda;
 
 import java.io.BufferedReader;
@@ -15,8 +19,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 
 import edu.wpi.cs.eutrepe.db.SnippetDao;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
