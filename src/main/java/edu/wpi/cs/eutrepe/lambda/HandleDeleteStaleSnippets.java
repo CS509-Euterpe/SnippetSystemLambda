@@ -89,7 +89,9 @@ public class HandleDeleteStaleSnippets implements RequestStreamHandler {
 						}
 						logger.log("should be deleting snippet");
 						logger.log("" + cur.getId());
+						logger.log("" + cur.getTimestamp());
 						logger.log(""+snippetDao.deleteSnippet(cur.getId()));
+						
 						new WebsocketUtil(logger).notifyUsers(cur.getId(),
 								"{\"eventType\":\"snippet\", \"snippetId\":" + cur.getId() + "}");
 						
