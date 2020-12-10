@@ -64,7 +64,7 @@ public class SnippetDao {
     		PreparedStatement ps = conn.prepareStatement("INSERT INTO " + tblName + " (info,language,timestamp,content,password,name) values(?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1,  snippet.getInfo());
             ps.setInt(2,  snippet.getLanguage().ordinal());
-            ps.setDate(3,  Date.valueOf(snippet.getTimestamp()));
+            ps.setString(3,  snippet.getTimestamp());
             ps.setString(4,  snippet.getContent());
             ps.setString(5,  snippet.getPassword());
             ps.setString(6,  snippet.getName());
@@ -120,7 +120,7 @@ public class SnippetDao {
 		Integer id  = resultSet.getInt("id");
         String content = resultSet.getString("content");
         String info = resultSet.getString("info");
-        String timestamp = resultSet.getDate("timestamp").toString();
+        String timestamp = resultSet.getString("timestamp").toString();
         String name = resultSet.getString("name").toString();
         String password = resultSet.getString("password").toString();
         SnippetDto snippet = new SnippetDto();
