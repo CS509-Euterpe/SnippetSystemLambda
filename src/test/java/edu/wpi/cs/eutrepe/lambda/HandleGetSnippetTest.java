@@ -1,24 +1,24 @@
+/*
+ * CS-509 Team Eutrepe AWS Application Test
+ */
+
 package edu.wpi.cs.eutrepe.lambda;
 
 import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import edu.wpi.cs.eutrepe.db.CommentDao;
 import edu.wpi.cs.eutrepe.db.SnippetDao;

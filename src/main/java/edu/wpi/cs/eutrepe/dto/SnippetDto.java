@@ -1,6 +1,9 @@
+/*
+ * CS-509 Team Eutrepe AWS Application
+ */
+
 package edu.wpi.cs.eutrepe.dto;
 
-import java.time.*;
 import java.util.List;
 
 public class SnippetDto {
@@ -60,21 +63,6 @@ public class SnippetDto {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((comments == null) ? 0 : comments.hashCode());
-		result = prime * result + ((content == null) ? 0 : content.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((info == null) ? 0 : info.hashCode());
-		result = prime * result + ((language == null) ? 0 : language.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
-		return result;
 	}
 	
 	@Override

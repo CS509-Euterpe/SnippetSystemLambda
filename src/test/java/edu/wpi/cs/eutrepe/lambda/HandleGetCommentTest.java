@@ -1,3 +1,7 @@
+/*
+ * CS-509 Team Eutrepe AWS Application Test
+ */
+
 package edu.wpi.cs.eutrepe.lambda;
 
 import static org.junit.Assert.assertEquals;
@@ -7,12 +11,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -28,9 +30,6 @@ import edu.wpi.cs.eutrepe.dto.Region;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
 
 
-/**
- * A simple test harness for locally invoking your Lambda function handler.
- */
 public class HandleGetCommentTest extends LambdaTest{
 
     @Test

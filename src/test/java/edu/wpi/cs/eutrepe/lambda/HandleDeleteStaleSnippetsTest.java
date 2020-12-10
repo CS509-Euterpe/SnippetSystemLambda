@@ -1,3 +1,7 @@
+/*
+ * CS-509 Team Eutrepe AWS Application Test
+ */
+
 package edu.wpi.cs.eutrepe.lambda;
 
 import static org.junit.Assert.assertEquals;
@@ -7,17 +11,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 
-import org.junit.Assert;
+import java.text.SimpleDateFormat;
+
+import java.util.ArrayList;
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -28,11 +28,7 @@ import edu.wpi.cs.eutrepe.db.SnippetDao;
 import edu.wpi.cs.eutrepe.dto.CommentDto;
 import edu.wpi.cs.eutrepe.dto.Language;
 import edu.wpi.cs.eutrepe.dto.SnippetDto;
-import edu.wpi.cs.eutrepe.http.DeleteSnippetResponse;
 
-/**
- * A simple test harness for locally invoking your Lambda function handler.
- */
 public class HandleDeleteStaleSnippetsTest extends LambdaTest{
 
     @Test
@@ -50,7 +46,6 @@ public class HandleDeleteStaleSnippetsTest extends LambdaTest{
         snippet.setLanguage(Language.PYTHON);
         snippet.setPassword("password");
         snippet.setTimestamp(dateFormat.format(new java.sql.Timestamp(System.currentTimeMillis())));
-        System.out.println(snippet.getTimestamp()); //used for checking time format
         
         //create sample snippet created 10 days ago
         int days = 10;
@@ -61,7 +56,6 @@ public class HandleDeleteStaleSnippetsTest extends LambdaTest{
         oldsnippet.setLanguage(Language.PYTHON);
         oldsnippet.setPassword("password");
         oldsnippet.setTimestamp(dateFormat.format(new java.sql.Timestamp(System.currentTimeMillis() - (days * 86400000))));
-        System.out.println(oldsnippet.getTimestamp());
         //create sample snippet created 100 days ago
         days = 20;
         SnippetDto crustysnippet = new SnippetDto();
@@ -71,7 +65,7 @@ public class HandleDeleteStaleSnippetsTest extends LambdaTest{
         crustysnippet.setLanguage(Language.PYTHON);
         crustysnippet.setPassword("password");
         crustysnippet.setTimestamp(dateFormat.format(new java.sql.Timestamp(System.currentTimeMillis() - (days * 86400000))));
-        System.out.println(crustysnippet.getTimestamp());
+      
         
         //check that the snippet ids are null when initializing
         assertNull(snippet.getId());

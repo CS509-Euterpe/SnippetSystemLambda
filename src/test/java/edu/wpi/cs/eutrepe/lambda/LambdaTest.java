@@ -1,3 +1,7 @@
+/*
+ * CS-509 Team Eutrepe AWS Application Test
+ */
+
 package edu.wpi.cs.eutrepe.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
